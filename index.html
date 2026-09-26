@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
+    <title>Roblox Utility Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .neon-modal {
+            background: radial-gradient(circle at 50% 0%, #031b29 0%, #050a14 60%, #020205 100%);
+            border: 3px solid #bf00ff;
+            box-shadow: 0 0 15px #a855f7, 0 0 30px #9333ea, inset 0 0 15px rgba(168, 85, 247, 0.3);
+            animation: neonGlowPulse 2s infinite alternate, gentleShake 3s infinite ease-in-out;
+        }
+
+        @keyframes neonGlowPulse {
+            0% {
+                border-color: #a855f7;
+                box-shadow: 0 0 10px #a855f7, 0 0 20px #9333ea, inset 0 0 10px rgba(168, 85, 247, 0.2);
+            }
+            50% {
+                border-color: #d8b4fe;
+                box-shadow: 0 0 25px #c084fc, 0 0 45px #a855f7, inset 0 0 20px rgba(192, 132, 252, 0.4);
+            }
+            100% {
+                border-color: #a855f7;
+                box-shadow: 0 0 12px #a855f7, 0 0 25px #9333ea, inset 0 0 12px rgba(168, 85, 247, 0.25);
+            }
+        }
+
+        @keyframes gentleShake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(-1.5px, 1px) rotate(-0.3deg); }
+            40% { transform: translate(1.5px, -1px) rotate(0.3deg); }
+            60% { transform: translate(-1px, -1px) rotate(-0.2deg); }
+            80% { transform: translate(1px, 1.5px) rotate(0.2deg); }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col" onclick="closeSearchResults(event)">
+
+    <div id="mainApp" class="min-h-full flex flex-col">
+        <header class="bg-purple-700 text-white sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleSidebar()" class="p-2 rounded-xl hover:bg-purple-600 transition-colors duration-200 focus:outline-none" aria-label="Open Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center font-bold text-sm">
+                            RX
+                        </div>
+                        <span class="font-bold text-lg tracking-tight hidden sm:inline-block">Pain Tool - Trang Web Tải Hack Roblox</span>
+                    </div>
+                </div>
+
+                <div class="relative w-48 sm:w-72" id="searchContainer">
+                    <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm script, executor, bypass..." 
+                        class="w-full pl-9 pr-4 py-2 bg-purple-800/60 border border-purple-500/50 rounded-xl text-xs sm:text-sm text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-purple-900/80 transition-all duration-200">
+                    <svg class="w-4 h-4 absolute left-3 top-2.5 text-purple-200 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+
+                    <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+        
+        <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-purple-50">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-purple-700 flex items-center justify-center text-white font-bold text-xs">
+                        RX
+                    </div>
+                    <span class="font-bold text-slate-900">Danh Mục Menu</span>
+                </div>
+                <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="p-4 space-y-1.5 flex-1 bg-white">
+                <button onclick="selectTab('home')" id="nav-home" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-purple-50 text-purple-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>Trang chủ</span>
+                </button>
+
+                <button onclick="selectTab('executor')" id="nav-executor" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    <span>Executor</span>
+                </button>
+
+                <button onclick="selectTab('script')" id="nav-script" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    <span>Kho Script</span>
+                </button>
+
+                <button onclick="selectTab('bypass')" id="nav-bypass" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <span>Tool Bypass</span>
+                </button>
+
+                <button onclick="selectTab('note')" id="nav-note" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <span>Ghi chú</span>
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-slate-100 text-xs text-slate-400 text-center bg-white">
+               By Pain Gamer Center © 2026
+            </div>
+        </aside>
+
+        <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-10 bg-white">
+            <section id="content-home" class="tab-content block space-y-12">
+                <div class="max-w-2xl py-4">
+                    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4">
+                        Trang Web Tải Hack Roblox & Script Cho Điện Thoại Cả Cloud Phone
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+                        Tổng hợp các công cụ hỗ trợ và các bản Executor siêu mượt và Script Farm chất lượng cao. Trang Web Thiết kế đơn giản, dễ thao tác và cập nhật liên tục.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">01</div>
+                        <h3 class="font-semibold text-lg text-slate-900 mb-2">Ổn định & An toàn</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed">Các bản build luôn được kiểm tra kỹ lưỡng trước khi đăng tải để đảm bảo tính ổn định cao nhất.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">02</div>
+                        <h3 class="font-semibold text-lg text-slate-900 mb-2">Cập nhật nhanh</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed">Luôn tương thích với các phiên bản vá lỗi mới nhất của trò chơi trong thời gian ngắn.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">03</div>
+                        <h3 class="font-semibold text-lg text-slate-900 mb-2">Miễn phí hoàn toàn</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed">Truy cập toàn bộ danh mục và sử dụng tất cả công cụ trên web mà không tốn bất kỳ chi phí nào.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-executor" class="tab-content hidden space-y-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Danh sách Executor</h2>
+                    <p class="text-sm text-slate-500 mt-1">Lựa chọn Trình thực thi phù hợp với thiết bị của bạn.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2 border-b border-slate-200 pb-2">
+                        <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                        <h3 class="font-bold text-lg text-slate-900">Global</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800">Android / iOS</span>
+                                    <span class="text-xs text-slate-400">v2.600</span>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3">
+                                    <img src="delta-logo.png" alt="Delta Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
+                                    <h3 class="font-bold text-xl text-slate-900">Delta Executor</h3>
+                                </div>
+
+                                <p class="text-sm text-slate-500 mt-3 leading-relaxed">Hỗ trợ phiên bản Global, giao diện trực quan, bypass nhanh và mượt mà.</p>
+                            </div>
+                            
+                            <button onclick="openWaitingPage('Delta Executor Global', 'v2.600', 'delta-logo.png', 'delta-global.apk')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải về Delta Global (.APK)
+                            </button>
+                        </div>
+
+                        <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">Windows</span>
+                                    <span class="text-xs text-slate-400">v1.2.0</span>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3">
+                                    <img src="fluxus-logo.png" alt="Fluxus Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
+                                    <h3 class="font-bold text-xl text-slate-900">Fluxus PC</h3>
+                                </div>
+
+                                <p class="text-sm text-slate-500 mt-3 leading-relaxed">Trình thực thi dành cho máy tính phiên bản Global, xử lý script mượt mà.</p>
+                            </div>
+                            
+                            <button onclick="openWaitingPage('Fluxus PC', 'v1.2.0', 'fluxus-logo.png', 'fluxus-global.zip')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải về bản PC (.ZIP)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-center space-x-2 border-b border-slate-200 pb-2">
+                        <span class="w-3 h-3 rounded-full bg-red-600"></span>
+                        <h3 class="font-bold text-lg text-slate-900">VNG</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800">Android / iOS</span>
+                                    <span class="text-xs text-slate-400">v2.600</span>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3">
+                                    <img src="delta-vng-logo.png" alt="Delta VNG Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
+                                    <h3 class="font-bold text-xl text-slate-900">Delta VNG</h3>
+                                </div>
+
+                                <p class="text-sm text-slate-500 mt-3 leading-relaxed">Bản tương thích hoàn toàn với phiên bản VNG, tự động bypass và tối ưu tốt.</p>
+                            </div>
+                            
+                            <button onclick="openWaitingPage('Delta VNG', 'v2.600', 'delta-vng-logo.png', 'delta-vng.apk')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải về Delta VNG (.APK)
+                            </button>
+                        </div>
+
+                        <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-purple-100 text-purple-800">Android</span>
+                                    <span class="text-xs text-slate-400">v2.1.0</span>
+                                </div>
+                                
+                                <div class="flex items-center space-x-3">
+                                    <img src="arceus-logo.png" alt="Arceus Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
+                                    <h3 class="font-bold text-xl text-slate-900">Arceus X VNG</h3>
+                                </div>
+
+                                <p class="text-sm text-slate-500 mt-3 leading-relaxed">Executor phổ biến hỗ trợ bản VNG, giao diện menu nổi tiện lợi.</p>
+                            </div>
+                            
+                            <button onclick="openWaitingPage('Arceus X VNG', 'v2.1.0', 'arceus-logo.png', 'arceus-vng.apk')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải về Arceus VNG (.APK)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-script" class="tab-content hidden space-y-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Kho Script</h2>
+                    <p class="text-sm text-slate-500 mt-1">Sao chép script cho tựa game yêu thích của bạn.</p>
+                </div>
+
+                <div class="space-y-4" id="scriptList">
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-semibold text-slate-900">Blox Fruits - Hoho Hub</span>
+                                <span class="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded">Auto Farm</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Cập nhật 2 ngày trước • Hỗ trợ Update mới nhất</p>
+                        </div>
+                        <button onclick="copyScript('loadstring(game:HttpGet(&quot;THAY_LINK_SCRIPT_HOHO_TAI_DAY&quot;))()')" 
+                            class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
+                            Sao chép Script
+                        </button>
+                    </div>
+
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-semibold text-slate-900">King Legacy - Alchemy Hub</span>
+                                <span class="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded">Fast Attack</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Cập nhật hôm qua • Bản không cần Key</p>
+                        </div>
+                        <button onclick="copyScript('loadstring(game:HttpGet(&quot;THAY_LINK_SCRIPT_KING_TAI_DAY&quot;))()')" 
+                            class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
+                            Sao chép Script
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-bypass" class="tab-content hidden space-y-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Công Cụ Link Bypass Key</h2>
+                    <p class="text-sm text-slate-500 mt-1">Hỗ trợ vượt các trang quảng cáo lấy Key Executor (Delta, Fluxus, Arceus...) và Script dễ dàng.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-amber-100 text-amber-800">Khuyên Dùng</span>
+                                <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">● Hoạt động tốt</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0">⚡</div>
+                                <h3 class="font-bold text-xl text-slate-900">Bypass VIP Auto Key</h3>
+                            </div>
+
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Công cụ vượt link rút gọn tự động tốt nhất hiện nay, bỏ qua Linkvertise, Lootlabs, Gateway chỉ trong vài giây.</p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <a href="https://bypass.city" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Truy cập Bypass VIP ↗
+                            </a>
+                            <button onclick="copyScript('https://bypass.city')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-purple-100 text-purple-800">Delta Executor</span>
+                                <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">● Hoạt động tốt</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <img src="delta-logo.png" alt="Delta Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
+                                <h3 class="font-bold text-xl text-slate-900">Bypass Delta Key</h3>
+                            </div>
+
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Chuyên dụng để lấy key Delta cực nhanh mà không cần phải thực hiện các nhiệm vụ cài ứng dụng phức tạp.</p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <a href="https://bypass.vip" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Truy cập Bypass Key ↗
+                            </a>
+                            <button onclick="copyScript('https://bypass.vip')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">Fluxus</span>
+                                <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">● Hoạt động tốt</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <img src="fluxus-logo.png" alt="Fluxus Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
+                                <h3 class="font-bold text-xl text-slate-900">Bypass Fluxus Key</h3>
+                            </div>
+
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Hỗ trợ vượt các cổng link checkpoint lấy Key Fluxus nhanh gọn cho cả máy tính và điện thoại.</p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <a href="https://fluxusbypass.com" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Truy cập Bypass Fluxus ↗
+                            </a>
+                            <button onclick="copyScript('https://fluxusbypass.com')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-800">Đa Năng</span>
+                                <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">● Hoạt động tốt</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0">🔓</div>
+                                <h3 class="font-bold text-xl text-slate-900">Bypass AdLinks</h3>
+                            </div>
+
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Hỗ trợ dán link bất kỳ (Linkvertise, Workink, Boost.ink) để lấy link đích trực tiếp.</p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <a href="https://thepypas.com" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Truy cập AdBypass ↗
+                            </a>
+                            <button onclick="copyScript('https://thepypas.com')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-note" class="tab-content hidden space-y-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Ghi chú Cá nhân</h2>
+                    <p class="text-sm text-slate-500 mt-1">Lưu trữ văn bản, mã code và chú thích riêng tư an toàn với lớp bảo mật mật khẩu.</p>
+                </div>
+
+                <div id="noteLockView" class="max-w-md mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center mx-auto">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Yêu cầu Mật khẩu</h3>
+                        <p class="text-xs text-slate-500 mt-1" id="noteLockSubtitle">Nhập mật khẩu để truy cập hoặc tạo không gian ghi chú mới.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <input type="password" id="notePasswordInput" placeholder="Nhập mật khẩu bảo mật..." 
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all">
+                        
+                        <button onclick="unlockNote()" class="w-full py-3 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200">
+                            Xác nhận Mật khẩu
+                        </button>
+                    </div>
+                </div>
+
+                <div id="noteContentView" class="hidden space-y-6">
+                    <div class="flex items-center justify-between bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                        <div class="flex items-center space-x-2 text-purple-700 font-semibold text-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Đã mở khóa ghi chú bảo mật</span>
+                        </div>
+                        <button onclick="lockNote()" class="text-xs font-semibold px-3 py-1.5 bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors">
+                            Khóa lại
+                        </button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label for="noteTextarea" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Nội dung ghi chú</label>
+                        <textarea id="noteTextarea" rows="10" placeholder="Soạn thảo nội dung ghi chú, liên kết hoặc thông tin cá nhân cần bảo lưu..." 
+                            class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all leading-relaxed"></textarea>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-4">
+                        <button onclick="openConfirmModal()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-xl transition-all">
+                            Xóa nội dung
+                        </button>
+                        <button onclick="saveNote()" class="px-6 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all shadow-md">
+                            Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="waitingScreen" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col justify-center items-center p-4 sm:p-6 w-full">
+        <div class="max-w-md w-full rounded-3xl neon-modal p-6 sm:p-8 space-y-6 text-center text-white">
+            
+            <div class="flex flex-col items-center space-y-3">
+                <img id="appIcon" src="delta-logo.png" alt="Executor Logo" class="w-20 h-20 rounded-2xl object-cover border border-purple-500/30 shadow-lg shadow-purple-900/50">
+                <div>
+                    <h1 id="appName" class="text-2xl font-bold text-white tracking-wide">Delta Executor</h1>
+                    <span id="appVer" class="inline-block mt-1 text-xs font-semibold px-2.5 py-1 rounded-md bg-purple-900/60 text-purple-300 border border-purple-500/40">v2.600</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-cyan-500/20 text-xs sm:text-sm text-cyan-100/90 leading-relaxed text-left space-y-2 shadow-inner">
+                <p class="font-semibold text-cyan-300 flex items-center gap-1.5">
+                    <span>📌</span> Hướng dẫn & Lưu ý:
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-slate-300">
+                    <li>Tệp tin an toàn và đã qua kiểm duyệt bảo mật.</li>
+                    <li>Vui lòng chờ trong giây lát để hệ thống tạo liên kết tải xuống.</li>
+                    <li>Gỡ cài đặt bản Roblox cũ (nếu có) trước khi cài bản mới.</li>
+                </ul>
+            </div>
+
+            <div class="relative w-full">
+                <a id="downloadBtn" href="#" class="relative block w-full py-3.5 bg-slate-800/80 text-slate-400 font-medium text-sm rounded-xl overflow-hidden cursor-not-allowed pointer-events-none transition-all duration-300 border border-purple-900/50">
+                    <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-purple-600 to-indigo-600 h-full w-0 transition-all duration-1000 ease-linear shadow-lg shadow-purple-500/50"></div>
+                    <span id="downloadBtnText" class="relative z-10">Vui lòng chờ 5 giây...</span>
+                </a>
+            </div>
+
+            <div class="pt-2 text-center">
+                <button onclick="closeWaitingPage()" class="text-xs font-medium text-slate-400 hover:text-cyan-300 transition-colors">
+                    ← Quay lại trang chủ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all duration-200 opacity-0">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="confirmModalBox">
+            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+            </div>
+            
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-bold text-slate-900">Xác nhận xóa</h3>
+                <p class="text-sm text-slate-500">Bạn có chắc chắn muốn xóa toàn bộ nội dung ghi chú này?</p>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-2">
+                <button onclick="closeConfirmModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl transition-colors">
+                    Hủy
+                </button>
+                <button onclick="confirmClearNote()" class="w-1/2 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium text-sm rounded-xl transition-colors shadow-sm">
+                    Xóa ngay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-xl translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        Đã sao chép vào bộ nhớ tạm!
+    </div>
+
+    <script>
+        let timer = null;
+
+        const siteData = [
+            { name: "Delta Executor", tab: "executor", icon: "delta-logo.png", category: "Executor" },
+            { name: "Fluxus PC", tab: "executor", icon: "fluxus-logo.png", category: "Executor" },
+            { name: "Delta VNG", tab: "executor", icon: "delta-vng-logo.png", category: "Executor" },
+            { name: "Arceus X VNG", tab: "executor", icon: "arceus-logo.png", category: "Executor" },
+            { name: "Blox Fruits - Hoho Hub", tab: "script", icon: "", category: "Script" },
+            { name: "King Legacy - Alchemy Hub", tab: "script", icon: "", category: "Script" },
+            { name: "Bypass VIP Auto Key", tab: "bypass", icon: "", category: "Bypass" },
+            { name: "Bypass Delta Key", tab: "bypass", icon: "delta-logo.png", category: "Bypass" },
+            { name: "Bypass Fluxus Key", tab: "bypass", icon: "fluxus-logo.png", category: "Bypass" },
+            { name: "Bypass AdLinks", tab: "bypass", icon: "", category: "Bypass" },
+            { name: "Ghi chú", tab: "note", icon: "", category: "Ghi chú" }
+        ];
+
+        function openWaitingPage(name, ver, icon, file) {
+            document.getElementById('appName').textContent = name;
+            document.getElementById('appVer').textContent = ver;
+            document.getElementById('appIcon').src = icon;
+
+            const waitingScreen = document.getElementById('waitingScreen');
+            const progressBar = document.getElementById('progressBar');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const downloadBtnText = document.getElementById('downloadBtnText');
+
+            waitingScreen.classList.remove('hidden');
+
+            let timeLeft = 5;
+            const totalTime = 5;
+
+            progressBar.style.width = '0%';
+            downloadBtnText.textContent = `Vui lòng chờ 5 giây...`;
+            downloadBtnText.className = "relative z-10 text-slate-300 font-medium";
+            downloadBtn.className = "relative block w-full py-3.5 bg-slate-800/80 text-slate-400 font-medium text-sm rounded-xl overflow-hidden cursor-not-allowed pointer-events-none transition-all duration-300 border border-purple-900/50";
+
+            if (timer) clearInterval(timer);
+
+            timer = setInterval(() => {
+                timeLeft--;
+                const progress = ((totalTime - timeLeft) / totalTime) * 100;
+                progressBar.style.width = `${progress}%`;
+
+                if (timeLeft > 0) {
+                    downloadBtnText.textContent = `Vui lòng chờ ${timeLeft} giây...`;
+                } else {
+                    clearInterval(timer);
+                    downloadBtnText.textContent = "Tải xuống ngay";
+                    downloadBtnText.className = "relative z-10 text-white font-semibold tracking-wide";
+                    downloadBtn.href = file;
+                    downloadBtn.setAttribute('download', '');
+                    
+                    downloadBtn.classList.remove('bg-slate-800/80', 'text-slate-400', 'cursor-not-allowed', 'pointer-events-none');
+                    downloadBtn.classList.add('bg-purple-600', 'hover:bg-purple-500', 'shadow-lg', 'shadow-purple-600/50', 'border-purple-400');
+                }
+            }, 1000);
+        }
+
+        function closeWaitingPage() {
+            if (timer) clearInterval(timer);
+            document.getElementById('waitingScreen').classList.add('hidden');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100');
+            }
+        }
+
+        function selectTab(tabName) {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                toggleSidebar();
+            }
+
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-50', 'text-purple-700');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-purple-50', 'text-purple-700');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+
+            const activeContent = document.getElementById(`content-${tabName}`);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+                activeContent.classList.add('block');
+            }
+        }
+
+        function handleSearchInput() {
+            const query = document.getElementById('headerSearchInput').value.trim().toLowerCase();
+            const dropdown = document.getElementById('searchResultsDropdown');
+
+            if (!query) {
+                dropdown.innerHTML = '';
+                dropdown.classList.add('hidden');
+                globalSearch();
+                return;
+            }
+
+            const matches = siteData.filter(item => item.name.toLowerCase().includes(query));
+
+            if (matches.length > 0) {
+                dropdown.innerHTML = matches.map(item => {
+                    const iconHtml = item.icon 
+                        ? `<img src="${item.icon}" alt="${item.name}" class="w-7 h-7 rounded-lg object-cover border border-slate-200 shrink-0">`
+                        : `<div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 font-bold text-xs flex items-center justify-center shrink-0">${item.category.charAt(0)}</div>`;
+
+                    return `
+                        <div onclick="navigateToItem('${item.tab}')" class="flex items-center justify-between p-3 hover:bg-purple-50 cursor-pointer border-b border-slate-100 last:border-none transition-colors">
+                            <div class="flex items-center space-x-3 overflow-hidden">
+                                ${iconHtml}
+                                <span class="font-medium text-sm text-slate-800 truncate">${item.name}</span>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-500 shrink-0">${item.category}</span>
+                        </div>
+                    `;
+                }).join('');
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.innerHTML = `<div class="p-3 text-xs text-slate-400 text-center">Không tìm thấy kết quả</div>`;
+                dropdown.classList.remove('hidden');
+            }
+
+            globalSearch();
+        }
+
+        function navigateToItem(tabName) {
+            selectTab(tabName);
+            document.getElementById('searchResultsDropdown').classList.add('hidden');
+            document.getElementById('headerSearchInput').value = '';
+            globalSearch();
+        }
+
+        function closeSearchResults(event) {
+            const container = document.getElementById('searchContainer');
+            if (container && !container.contains(event.target)) {
+                document.getElementById('searchResultsDropdown').classList.add('hidden');
+            }
+        }
+
+        function globalSearch() {
+            const query = document.getElementById('headerSearchInput').value.toLowerCase();
+            document.querySelectorAll('.searchable-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? "" : "none";
+            });
+        }
+
+        function copyScript(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Đã sao chép vào bộ nhớ tạm!");
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        function unlockNote() {
+            const inputPass = document.getElementById('notePasswordInput').value;
+            const savedPass = localStorage.getItem('rx_note_pass');
+
+            if (!inputPass) {
+                showToast("Vui lòng nhập mật khẩu!");
+                return;
+            }
+
+            if (!savedPass) {
+                localStorage.setItem('rx_note_pass', inputPass);
+                showToast("Đã thiết lập mật khẩu bảo mật!");
+                showNoteContent();
+            } else if (inputPass === savedPass) {
+                showToast("Mở khóa thành công!");
+                showNoteContent();
+            } else {
+                showToast("Mật khẩu không chính xác!");
+            }
+        }
+
+        function showNoteContent() {
+            document.getElementById('noteLockView').classList.add('hidden');
+            document.getElementById('noteContentView').classList.remove('hidden');
+            document.getElementById('noteTextarea').value = localStorage.getItem('rx_note_content') || '';
+        }
+
+        function lockNote() {
+            document.getElementById('noteContentView').classList.add('hidden');
+            document.getElementById('noteLockView').classList.remove('hidden');
+            document.getElementById('notePasswordInput').value = '';
+            showToast("Đã khóa ghi chú.");
+        }
+
+        function saveNote() {
+            localStorage.setItem('rx_note_content', document.getElementById('noteTextarea').value);
+            showToast("Đã lưu ghi chú!");
+        }
+
+        function openConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            const box = document.getElementById('confirmModalBox');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            const box = document.getElementById('confirmModalBox');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 200);
+        }
+
+        function confirmClearNote() {
+            document.getElementById('noteTextarea').value = '';
+            localStorage.removeItem('rx_note_content');
+            closeConfirmModal();
+            showToast("Đã xóa nội dung ghi chú.");
+        }
+    </script>
+</body>
+</html>
