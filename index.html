@@ -134,6 +134,16 @@
         }
         .theme-swatch:hover { transform: translateY(-2px); }
         .theme-swatch.active { box-shadow: 0 0 0 2px #7e22ce; }
+
+        /* ===== VIỀN NEON TÍM NHẤP NHÁY CHO KHUNG ĐĂNG NHẬP NỔI ===== */
+        .neon-widget-border {
+            border: 2px solid #a855f7;
+            animation: neonGlowPulse 1.8s infinite alternate, widgetFloat 3s infinite ease-in-out;
+        }
+        @keyframes widgetFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
     </style>
 </head>
 <body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col" onclick="closeSearchResults(event); closeAccountMenuOnOutsideClick(event)">
@@ -793,7 +803,7 @@
             </div>
 
             <div class="relative w-full">
-                <a id="downloadBtn" href="#" class="relative block w-full py-3.5 bg-slate-800/80 text-slate-400 font-medium text-sm rounded-xl overflow-hidden cursor-not-allowed pointer-events-none transition-all duration-300 border border-purple-900/50">
+                <a id="downloadBtn" href="#" target="_blank" rel="noopener noreferrer" class="relative block w-full py-3.5 bg-slate-800/80 text-slate-400 font-medium text-sm rounded-xl overflow-hidden cursor-not-allowed pointer-events-none transition-all duration-300 border border-purple-900/50">
                     <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-purple-600 to-indigo-600 h-full w-0 transition-all duration-1000 ease-linear shadow-lg shadow-purple-500/50"></div>
                     <span id="downloadBtnText" class="relative z-10">Vui lòng chờ 5 giây...</span>
                 </a>
@@ -809,7 +819,7 @@
 
     <!-- ================= KHUNG ĐĂNG NHẬP NỔI (GÓC DƯỚI PHẢI) ================= -->
     <div id="loginWidget" class="hidden">
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-xl shadow-purple-900/5 p-4 w-64 relative">
+        <div class="bg-white neon-widget-border rounded-2xl shadow-xl shadow-purple-900/5 p-4 w-64 relative">
             <button onclick="dismissLoginWidget()" aria-label="Đóng" class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-md hover:bg-slate-900 transition-colors">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -1450,7 +1460,9 @@
                     downloadBtnText.textContent = "Tải xuống ngay";
                     downloadBtnText.className = "relative z-10 text-white font-semibold tracking-wide";
                     downloadBtn.href = file;
-                    downloadBtn.setAttribute('download', '');
+                    // Lưu ý: thuộc tính "download" bị trình duyệt bỏ qua với link khác domain (VD: GitHub),
+                    // nên ta mở file ở tab mới (target="_blank" đã đặt sẵn trên thẻ <a>) để không làm
+                    // "treo" thanh loading của tab chính đang hiển thị website.
                     
                     downloadBtn.classList.remove('bg-slate-800/80', 'text-slate-400', 'cursor-not-allowed', 'pointer-events-none');
                     downloadBtn.classList.add('bg-purple-600', 'hover:bg-purple-500', 'shadow-lg', 'shadow-purple-600/50', 'border-purple-400');
