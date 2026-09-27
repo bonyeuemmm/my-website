@@ -50,6 +50,50 @@
             60% { transform: translate(-1px, -1px) rotate(-0.2deg); }
             80% { transform: translate(1px, 1.5px) rotate(0.2deg); }
         }
+
+        .feature-card {
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+        .feature-card:hover {
+            border-color: rgba(126, 34, 206, 0.35);
+            box-shadow: 0 0 0 1px rgba(126, 34, 206, 0.08), 0 8px 24px -12px rgba(88, 28, 135, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .note-editor:empty:before {
+            content: attr(data-placeholder);
+            color: #94a3b8;
+            pointer-events: none;
+        }
+
+        .note-editor img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 8px 0;
+        }
+
+        button, a {
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.12s ease;
+        }
+        button:active, a:active {
+            transform: scale(0.97);
+        }
+
+        @keyframes uiClickPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55), 0 0 0 0 rgba(126, 34, 206, 0.35);
+            }
+            55% {
+                box-shadow: 0 0 0 3px rgba(255, 255, 255, 0), 0 0 0 7px rgba(126, 34, 206, 0.12);
+            }
+            100% {
+                box-shadow: 0 0 0 3px rgba(255, 255, 255, 0), 0 0 0 7px rgba(126, 34, 206, 0);
+            }
+        }
+        .ui-click-pulse {
+            animation: uiClickPulse 0.45s ease-out;
+        }
     </style>
 </head>
 <body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col" onclick="closeSearchResults(event)">
@@ -58,17 +102,20 @@
     <div id="mainApp" class="min-h-full flex flex-col">
         <header class="bg-white text-slate-800 sticky top-0 z-40 shadow-sm border-b-2 border-purple-700">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+                
+                <!-- HEADER LEFT: ICON VÀ NÚT MENU BÊN CẠNH -->
                 <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-purple-200">
+                    </div>
+
                     <button onclick="toggleSidebar()" class="p-2 rounded-xl text-slate-600 hover:bg-purple-600 hover:text-white transition-colors duration-200 focus:outline-none" aria-label="Open Menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
 
-                    <div class="flex items-center space-x-2">
-                        <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-purple-200">
-                        <span class="font-bold text-lg tracking-tight text-purple-700 hidden sm:inline-block">Pain Tool - Trang Web Tải Hack Roblox</span>
-                    </div>
+                    <span class="font-bold text-lg tracking-tight text-purple-700 hidden sm:inline-block">Pain Tool - Trang Web Tải Hack Roblox</span>
                 </div>
 
                 <div class="relative shrink-0" id="searchContainer">
@@ -182,29 +229,47 @@
 
         <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-10 bg-white">
             <!-- TAB TRANG CHỦ -->
-            <section id="content-home" class="tab-content block space-y-12">
-                <div class="max-w-2xl py-4">
-                    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4">
-                        Trang Web Tải Hack Roblox & Script Cho Điện Thoại Cả Cloud Phone
+            <section id="content-home" class="tab-content block space-y-14">
+                <!-- HERO -->
+                <div class="max-w-3xl py-6 sm:py-8">
+                    <h1 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-slate-900 mb-4 leading-tight">
+                        Trang Web Tải Hack Roblox &amp; Script Cho Điện Thoại Cả Cloud Phone
                     </h1>
-                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+                    <p class="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-2xl">
                         Tổng hợp các công cụ hỗ trợ và các bản Executor siêu mượt và Script Farm chất lượng cao. Trang Web Thiết kế đơn giản, dễ thao tác và cập nhật liên tục.
                     </p>
+
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="selectTab('executor')" class="inline-flex items-center gap-2 px-6 py-3 bg-purple-700 hover:bg-purple-800 text-white text-sm font-semibold rounded-xl transition-colors duration-200">
+                            Khám phá Executor
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </button>
+                        <button onclick="selectTab('script')" class="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 text-sm font-semibold rounded-xl transition-colors duration-200">
+                            Xem Kho Script
+                        </button>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
-                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">01</div>
-                        <h3 class="font-semibold text-lg text-slate-900 mb-2">Ổn định & An toàn</h3>
+                <!-- FEATURE CARDS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                    <div class="feature-card bg-white p-7 rounded-2xl border border-slate-200">
+                        <div class="w-11 h-11 bg-purple-50 rounded-xl flex items-center justify-center mb-5 text-purple-700">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h3 class="font-semibold text-lg text-slate-900 mb-2">Ổn định &amp; An toàn</h3>
                         <p class="text-sm text-slate-500 leading-relaxed">Các bản build luôn được kiểm tra kỹ lưỡng trước khi đăng tải để đảm bảo tính ổn định cao nhất.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
-                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">02</div>
+                    <div class="feature-card bg-white p-7 rounded-2xl border border-slate-200">
+                        <div class="w-11 h-11 bg-purple-50 rounded-xl flex items-center justify-center mb-5 text-purple-700">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
                         <h3 class="font-semibold text-lg text-slate-900 mb-2">Cập nhật nhanh</h3>
                         <p class="text-sm text-slate-500 leading-relaxed">Luôn tương thích với các phiên bản vá lỗi mới nhất của Công Cụ trong thời gian ngắn.</p>
                     </div>
-                    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
-                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">03</div>
+                    <div class="feature-card bg-white p-7 rounded-2xl border border-slate-200 sm:col-span-2 md:col-span-1">
+                        <div class="w-11 h-11 bg-purple-50 rounded-xl flex items-center justify-center mb-5 text-purple-700">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5.172a2 2 0 011.414.586l7.828 7.828a2 2 0 010 2.828l-7.172 7.172a2 2 0 01-2.828 0L3.586 13.586A2 2 0 013 12.172V7a4 4 0 014-4z"></path></svg>
+                        </div>
                         <h3 class="font-semibold text-lg text-slate-900 mb-2">Miễn phí hoàn toàn</h3>
                         <p class="text-sm text-slate-500 leading-relaxed">Truy cập toàn bộ danh mục và sử dụng tất cả công cụ trên web mà không tốn bất kỳ chi phí nào.</p>
                     </div>
@@ -371,7 +436,7 @@
                                 <span class="text-xs text-slate-400 font-mono">v2.10.0</span>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">Z</div>
+                                <img src="DAN_LINK_ICON_ZARCHIVER_TAI_DAY" alt="ZArchiver" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0">
                                 <div>
                                     <h3 class="font-bold text-slate-900">ZArchiver Pro</h3>
                                     <p class="text-xs text-slate-400">Giải nén file .zip, .rar</p>
@@ -381,7 +446,7 @@
                         </div>
                         <div class="space-y-2">
                             <p class="text-xs text-slate-400">💡 <span class="font-medium text-slate-600">Bản Gốc:</span> Bản gốc chuẩn từ nhà phát triển.</p>
-                            <button onclick="openWaitingPage('ZArchiver Pro', 'v2.10.0', 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png', 'zarchiver-pro.apk')" class="w-full text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                            <button onclick="openWaitingPage('ZArchiver Pro', 'v2.10.0', 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png', 'https://github.com/bonyeuemmm/PainHub/releases/download/v1.0/ZArchiver.Pro.apk')" class="w-full text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
                                 Tải Xuống APK ↓
                             </button>
                         </div>
@@ -395,7 +460,7 @@
                                 <span class="text-xs text-slate-400 font-mono">v1.0</span>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">T</div>
+                                <img src="DAN_LINK_ICON_TERMUX_TAI_DAY" alt="Termux" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0">
                                 <div>
                                     <h3 class="font-bold text-slate-900">Termux</h3>
                                     <p class="text-xs text-slate-400">Trình giả lập dòng lệnh Linux</p>
@@ -419,7 +484,7 @@
                                 <span class="text-xs text-slate-400 font-mono">v1.0</span>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">T</div>
+                                <img src="DAN_LINK_ICON_TERMUX_BOOT_TAI_DAY" alt="Termux:Boot" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0">
                                 <div>
                                     <h3 class="font-bold text-slate-900">Termux:Boot</h3>
                                     <p class="text-xs text-slate-400">Tiện ích mở rộng cho Termux</p>
@@ -443,7 +508,7 @@
                                 <span class="text-xs text-slate-400 font-mono">v1.0</span>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">U</div>
+                                <img src="DAN_LINK_ICON_UG_CLONER_TAI_DAY" alt="UG Cloner" class="w-11 h-11 rounded-xl object-cover border border-slate-200 shrink-0">
                                 <div>
                                     <h3 class="font-bold text-slate-900">UG Cloner</h3>
                                     <p class="text-xs text-slate-400">Nhân bản ứng dụng không giới hạn</p>
@@ -522,11 +587,11 @@
                 </div>
             </section>
 
-            <!-- TAB GHI CHÚ -->
+            <!-- TAB GHI CHÚ (Mật khẩu linh hoạt) -->
             <section id="content-note" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Ghi chú Cá nhân</h2>
-                    <p class="text-sm text-slate-500 mt-1">Lưu trữ văn bản, mã code và chú thích riêng tư an toàn với lớp bảo mật mật khẩu.</p>
+                    <p class="text-sm text-slate-500 mt-1">Lưu trữ văn bản và ghi chú riêng biệt dựa theo từng mật khẩu do bạn nhập.</p>
                 </div>
 
                 <div id="noteLockView" class="max-w-md mx-auto bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6 text-center">
@@ -536,16 +601,16 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-slate-900">Yêu cầu Mật khẩu</h3>
-                        <p class="text-xs text-slate-500 mt-1" id="noteLockSubtitle">Nhập mật khẩu để truy cập hoặc tạo không gian ghi chú mới.</p>
+                        <h3 class="text-lg font-bold text-slate-900">Nhập Mật khẩu Bảo mật</h3>
+                        <p class="text-xs text-slate-500 mt-1">Mỗi mật khẩu tương ứng với một không gian ghi chú riêng biệt.</p>
                     </div>
 
                     <div class="space-y-4">
-                        <input type="password" id="notePasswordInput" placeholder="Nhập mật khẩu bảo mật..." 
+                        <input type="password" id="notePasswordInput" placeholder="Nhập mật khẩu bất kỳ (VD: 123456)..." 
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all">
                         
                         <button onclick="unlockNote()" class="w-full py-3 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200">
-                            Xác nhận Mật khẩu
+                            nhập mật khẩu
                         </button>
                     </div>
                 </div>
@@ -556,17 +621,33 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
                             </svg>
-                            <span>Đã mở khóa ghi chú bảo mật</span>
+                            <span>Đang truy cập kho ghi chú của MK: <strong id="currentActivePassDisplay" class="text-purple-900 underline"></strong></span>
                         </div>
                         <button onclick="lockNote()" class="text-xs font-semibold px-3 py-1.5 bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors">
-                            Khóa lại
+                            Khóa / Thoát
                         </button>
                     </div>
 
                     <div class="space-y-3">
-                        <label for="noteTextarea" class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Nội dung ghi chú</label>
-                        <textarea id="noteTextarea" rows="10" placeholder="Soạn thảo nội dung ghi chú, liên kết hoặc thông tin cá nhân cần bảo lưu..." 
-                            class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all leading-relaxed"></textarea>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">Nội dung ghi chú</label>
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-purple-600 transition-all">
+                            <div class="flex items-center gap-1 px-3 py-2 border-b border-slate-200 bg-slate-50">
+                                <button type="button" onclick="formatNote('bold')" title="In đậm" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-white hover:text-purple-700 font-bold text-sm transition-colors">B</button>
+                                <button type="button" onclick="formatNote('italic')" title="In nghiêng" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-white hover:text-purple-700 italic text-sm transition-colors">I</button>
+                                <button type="button" onclick="formatNote('underline')" title="Gạch chân" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-white hover:text-purple-700 underline text-sm transition-colors">U</button>
+                                <span class="w-px h-5 bg-slate-200 mx-1"></span>
+                                <button type="button" onclick="openImageModal()" title="Chèn hình ảnh" class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-white hover:text-purple-700 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </button>
+                                <button type="button" onclick="pickNoteColor()" title="Màu chữ" class="relative w-8 h-8 flex items-center justify-center rounded-lg text-slate-600 hover:bg-white hover:text-purple-700 transition-colors">
+                                    <span class="text-sm font-semibold leading-none">A</span>
+                                    <span id="noteColorSwatch" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-3.5 h-0.5 rounded-full bg-purple-700"></span>
+                                </button>
+                                <input type="color" id="noteColorInput" value="#7e22ce" class="hidden" onchange="applyNoteColor(this.value)">
+                            </div>
+                            <div id="noteEditor" contenteditable="true" data-placeholder="Soạn thảo nội dung ghi chú, liên kết hoặc thông tin cá nhân cần bảo lưu..."
+                                class="note-editor w-full min-h-[220px] p-4 bg-slate-50 text-sm text-slate-800 focus:outline-none leading-relaxed"></div>
+                        </div>
                     </div>
 
                     <div class="flex items-center justify-between gap-4">
@@ -583,26 +664,26 @@
 
         <!-- FOOTER -->
         <footer class="bg-white border-t border-slate-200">
-            <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center text-center gap-4">
-                <div class="flex items-center gap-2.5">
-                    <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-9 h-9 rounded-full object-cover ring-1 ring-purple-200">
-                    <span class="font-bold text-slate-900 text-base">Pain Tool Website</span>
+            <div class="max-w-6xl mx-auto px-6 py-5 flex flex-col items-center text-center gap-2">
+                <div class="flex items-center gap-2">
+                    <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-6 h-6 rounded-full object-cover ring-1 ring-purple-200">
+                    <span class="font-semibold text-slate-800 text-sm">Pain Tool Website</span>
                 </div>
 
-                <p class="text-xs text-slate-400 max-w-md leading-relaxed">Copyright Pain Gamer © 2026</p>
+                <p class="text-[11px] text-slate-400">Copyright Pain Gamer © 2026</p>
 
-                <div class="flex items-center gap-3 pt-1">
+                <div class="flex items-center gap-2 pt-0.5">
                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-                        class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"></path></svg>
+                        class="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"></path></svg>
                     </a>
                     <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Youtube"
-                        class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 00.5 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.5 5.8 3.02 3.02 0 002.12 2.14c1.88.56 9.38.56 9.38.56s7.5 0 9.38-.56a3.02 3.02 0 002.12-2.14A31.6 31.6 0 0024 12a31.6 31.6 0 00-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"></path></svg>
+                        class="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 00.5 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.5 5.8 3.02 3.02 0 002.12 2.14c1.88.56 9.38.56 9.38.56s7.5 0 9.38-.56a3.02 3.02 0 002.12-2.14A31.6 31.6 0 0024 12a31.6 31.6 0 00-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"></path></svg>
                     </a>
                     <a href="https://discord.gg/z7RUNArBuJ" target="_blank" rel="noopener noreferrer" aria-label="Discord"
-                        class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"></path></svg>
+                        class="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"></path></svg>
                     </a>
                 </div>
             </div>
@@ -647,6 +728,59 @@
         </div>
     </div>
 
+    <!-- MODAL CHÈN HÌNH ẢNH MỚI (CHO WEB) -->
+    <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all duration-200 opacity-0">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="imageModalBox">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center space-x-2 text-purple-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <h3 class="text-base font-bold text-slate-900">Chèn Hình Ảnh Vào Ghi Chú</h3>
+                </div>
+                <button onclick="closeImageModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Dán đường dẫn (URL) ảnh:</label>
+                    <input type="text" id="imageUrlInput" placeholder="https://example.com/hinh-anh.png" 
+                        class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all">
+                </div>
+
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-slate-200"></div>
+                    <span class="flex-shrink mx-3 text-xs text-slate-400 font-medium">HOẶC</span>
+                    <div class="flex-grow border-t border-slate-200"></div>
+                </div>
+
+                <div>
+                    <button type="button" onclick="triggerFileInput()" class="w-full py-2.5 px-4 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                        </svg>
+                        <span>Tải ảnh từ thư viện máy</span>
+                    </button>
+                    <!-- File input ẩn -->
+                    <input type="file" id="imageFileInput" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-3 border-t border-slate-100">
+                <button onclick="closeImageModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl transition-colors">
+                    Hủy
+                </button>
+                <button onclick="confirmInsertImageUrl()" class="w-1/2 py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-colors shadow-sm">
+                    Chèn Ảnh
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL & TOAST NOTIFICATION -->
     <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all duration-200 opacity-0">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="confirmModalBox">
@@ -672,12 +806,56 @@
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-xl translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
-        Đã sao chép vào bộ nhớ tạm!
+    <div id="toast" class="fixed top-5 right-5 z-50 flex items-center gap-3 bg-white border border-purple-100 text-slate-800 pl-3 pr-5 py-3 rounded-2xl shadow-lg shadow-purple-900/5 -translate-y-6 opacity-0 pointer-events-none transition-all duration-300">
+        <span class="w-8 h-8 rounded-full bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </span>
+        <span id="toastMessage" class="text-sm font-medium"></span>
     </div>
 
     <script>
         let timer = null;
+        let currentNotePass = ''; // Biến lưu mật khẩu đang mở
+
+        // ÂM THANH & HIỆU ỨNG KHI BẤM NÚT
+        let audioCtx = null;
+        function playClickSound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(760, now);
+                osc.frequency.exponentialRampToValueAtTime(420, now + 0.09);
+
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.exponentialRampToValueAtTime(0.09, now + 0.006);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.1);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            } catch (e) { /* Trình duyệt không hỗ trợ Web Audio - bỏ qua */ }
+        }
+
+        document.addEventListener('click', function (e) {
+            const el = e.target.closest('button, a[class*="rounded-xl"], a[class*="rounded-full"]');
+            if (!el) return;
+
+            playClickSound();
+
+            el.classList.remove('ui-click-pulse');
+            void el.offsetWidth;
+            el.classList.add('ui-click-pulse');
+            el.addEventListener('animationend', () => el.classList.remove('ui-click-pulse'), { once: true });
+        }, true);
 
         // Cập nhật siteData
         const siteData = [
@@ -961,53 +1139,136 @@
 
         function showToast(message) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.remove('translate-y-20', 'opacity-0');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('-translate-y-6', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-            
-            setTimeout(() => {
+
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.add('-translate-y-6', 'opacity-0');
             }, 2500);
         }
 
+        /* --- XỬ LÝ GHI CHÚ THEO MẬT KHẨU LINH HOẠT --- */
         function unlockNote() {
-            const inputPass = document.getElementById('notePasswordInput').value;
-            const savedPass = localStorage.getItem('rx_note_pass');
+            const inputPass = document.getElementById('notePasswordInput').value.trim();
 
             if (!inputPass) {
                 showToast("Vui lòng nhập mật khẩu!");
                 return;
             }
 
-            if (!savedPass) {
-                localStorage.setItem('rx_note_pass', inputPass);
-                showToast("Đã thiết lập mật khẩu bảo mật!");
-                showNoteContent();
-            } else if (inputPass === savedPass) {
-                showToast("Mở khóa thành công!");
-                showNoteContent();
-            } else {
-                showToast("Mật khẩu không chính xác!");
-            }
+            currentNotePass = inputPass;
+            showToast("Đã truy cập ghi chú!");
+            showNoteContent();
         }
 
         function showNoteContent() {
             document.getElementById('noteLockView').classList.add('hidden');
             document.getElementById('noteContentView').classList.remove('hidden');
-            document.getElementById('noteTextarea').value = localStorage.getItem('rx_note_content') || '';
+            
+            // Hiển thị mật khẩu hiện tại
+            document.getElementById('currentActivePassDisplay').textContent = currentNotePass;
+
+            // Đọc nội dung ghi chú tương ứng với mật khẩu trong localStorage
+            const savedNote = localStorage.getItem(`rx_note_content_${currentNotePass}`) || '';
+            document.getElementById('noteEditor').innerHTML = savedNote;
         }
 
         function lockNote() {
             document.getElementById('noteContentView').classList.add('hidden');
             document.getElementById('noteLockView').classList.remove('hidden');
             document.getElementById('notePasswordInput').value = '';
+            currentNotePass = '';
             showToast("Đã khóa ghi chú.");
         }
 
         function saveNote() {
-            localStorage.setItem('rx_note_content', document.getElementById('noteTextarea').value);
-            showToast("Đã lưu ghi chú!");
+            if (!currentNotePass) return;
+            const content = document.getElementById('noteEditor').innerHTML;
+            localStorage.setItem(`rx_note_content_${currentNotePass}`, content);
+            showToast("Đã lưu ghi chú cho mật khẩu này!");
+        }
+
+        function formatNote(command) {
+            const editor = document.getElementById('noteEditor');
+            editor.focus();
+            document.execCommand(command, false, null);
+        }
+
+        /* --- XỬ LÝ MODAL CHÈN ẢNH WEB & UPLOAD FILE --- */
+        function openImageModal() {
+            const modal = document.getElementById('imageModal');
+            const box = document.getElementById('imageModalBox');
+            document.getElementById('imageUrlInput').value = '';
+            document.getElementById('imageFileInput').value = '';
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+                document.getElementById('imageUrlInput').focus();
+            }, 10);
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            const box = document.getElementById('imageModalBox');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 200);
+        }
+
+        function confirmInsertImageUrl() {
+            const url = document.getElementById('imageUrlInput').value.trim();
+            if (!url) {
+                showToast("Vui lòng nhập đường dẫn ảnh hoặc chọn tệp!");
+                return;
+            }
+            insertImageToEditor(url);
+            closeImageModal();
+        }
+
+        function triggerFileInput() {
+            document.getElementById('imageFileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast("Vui lòng chọn tệp định dạng hình ảnh!");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                insertImageToEditor(e.target.result);
+                closeImageModal();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function insertImageToEditor(src) {
+            const editor = document.getElementById('noteEditor');
+            editor.focus();
+            document.execCommand('insertHTML', false, `<img src="${src}" alt="Hình ảnh ghi chú">`);
+            showToast("Đã chèn hình ảnh thành công!");
+        }
+
+        function pickNoteColor() {
+            document.getElementById('noteColorInput').click();
+        }
+
+        function applyNoteColor(color) {
+            const editor = document.getElementById('noteEditor');
+            editor.focus();
+            document.execCommand('foreColor', false, color);
+            document.getElementById('noteColorSwatch').style.backgroundColor = color;
         }
 
         function openConfirmModal() {
@@ -1031,10 +1292,12 @@
         }
 
         function confirmClearNote() {
-            document.getElementById('noteTextarea').value = '';
-            localStorage.removeItem('rx_note_content');
+            document.getElementById('noteEditor').innerHTML = '';
+            if (currentNotePass) {
+                localStorage.removeItem(`rx_note_content_${currentNotePass}`);
+            }
             closeConfirmModal();
-            showToast("Đã xóa nội dung ghi chú.");
+            showToast("Đã xóa nội dung ghi chú này.");
         }
     </script>
 </body>
