@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light only">
-    <title>Roblox Utility Center</title>
+    <title>Pain Tool - Trang Tải Hack Roblox và Script Farm Siêu Mượt</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -54,32 +54,48 @@
 </head>
 <body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col" onclick="closeSearchResults(event)">
 
+    <!-- GIAO DIỆN CHÍNH -->
     <div id="mainApp" class="min-h-full flex flex-col">
-        <header class="bg-purple-700 text-white sticky top-0 z-40 shadow-md">
+        <header class="bg-white text-slate-800 sticky top-0 z-40 shadow-sm border-b-2 border-purple-700">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
                 <div class="flex items-center space-x-3">
-                    <button onclick="toggleSidebar()" class="p-2 rounded-xl hover:bg-purple-600 transition-colors duration-200 focus:outline-none" aria-label="Open Menu">
+                    <button onclick="toggleSidebar()" class="p-2 rounded-xl text-slate-600 hover:bg-purple-600 hover:text-white transition-colors duration-200 focus:outline-none" aria-label="Open Menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
 
                     <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center font-bold text-sm">
-                            RX
-                        </div>
-                        <span class="font-bold text-lg tracking-tight hidden sm:inline-block">Pain Tool - Trang Web Tải Hack Roblox</span>
+                        <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-purple-200">
+                        <span class="font-bold text-lg tracking-tight text-purple-700 hidden sm:inline-block">Pain Tool - Trang Web Tải Hack Roblox</span>
                     </div>
                 </div>
 
-                <div class="relative w-48 sm:w-72" id="searchContainer">
-                    <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm script, executor, bypass..." 
-                        class="w-full pl-9 pr-4 py-2 bg-purple-800/60 border border-purple-500/50 rounded-xl text-xs sm:text-sm text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-purple-900/80 transition-all duration-200">
-                    <svg class="w-4 h-4 absolute left-3 top-2.5 text-purple-200 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                <div class="relative shrink-0" id="searchContainer">
+                    <button id="searchToggleBtn" onclick="toggleHeaderSearch(event)" aria-label="Mở tìm kiếm"
+                        class="p-2.5 rounded-xl text-slate-600 hover:bg-purple-600 hover:text-white transition-colors duration-200 focus:outline-none">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
 
-                    <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
+                    <div id="searchExpandWrap" class="hidden absolute right-0 top-1/2 -translate-y-1/2 w-56 sm:w-80">
+                        <div class="relative">
+                            <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm script, executor, bypass..." 
+                                class="w-full pl-9 pr-9 py-2 bg-white border-2 border-purple-700 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-200">
+                            <svg class="w-4 h-4 absolute left-3 top-2.5 text-purple-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <button onclick="closeHeaderSearch(event)" aria-label="Đóng tìm kiếm"
+                                class="absolute right-2.5 top-2 text-slate-400 hover:text-purple-700 transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+
+                            <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -90,9 +106,7 @@
         <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-purple-50">
                 <div class="flex items-center space-x-2">
-                    <div class="w-7 h-7 rounded-lg bg-purple-700 flex items-center justify-center text-white font-bold text-xs">
-                        RX
-                    </div>
+                    <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-7 h-7 rounded-lg object-cover ring-1 ring-purple-100">
                     <span class="font-bold text-slate-900">Danh Mục Menu</span>
                 </div>
                 <button onclick="toggleSidebar()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/50 transition-colors">
@@ -102,31 +116,63 @@
                 </button>
             </div>
 
-            <nav class="p-4 space-y-1.5 flex-1 bg-white">
-                <button onclick="selectTab('home')" id="nav-home" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-purple-50 text-purple-700">
+            <div class="px-4 pt-4 pb-3 bg-white">
+                <div class="relative">
+                    <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="sidebarSearchInput" oninput="filterSidebarTabs()" placeholder="Tìm tab..."
+                        class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-purple-400 focus:bg-white transition-colors duration-200">
+                </div>
+            </div>
+
+            <nav class="px-4 pb-4 space-y-1.5 flex-1 bg-white overflow-y-auto" id="sidebarNav">
+                <button onclick="selectTab('home')" id="nav-home" data-label="trang chủ" class="sidebar-btn nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-purple-50 text-purple-700">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     <span>Trang chủ</span>
                 </button>
 
-                <button onclick="selectTab('executor')" id="nav-executor" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <button onclick="selectTab('executor')" id="nav-executor" data-label="executor" class="sidebar-btn nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                     <span>Executor</span>
                 </button>
 
-                <button onclick="selectTab('script')" id="nav-script" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <button onclick="selectTab('script')" id="nav-script" data-label="kho script" class="sidebar-btn nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                     <span>Kho Script</span>
                 </button>
 
-                <button onclick="selectTab('bypass')" id="nav-bypass" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    <span>Tool Bypass</span>
+                <button onclick="selectTab('apk')" id="nav-apk" data-label="mods apk" class="sidebar-btn nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"></path></svg>
+                    <span>MODS APK</span>
                 </button>
 
-                <button onclick="selectTab('note')" id="nav-note" class="sidebar-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                <!-- NHÓM TAB "TOOL" - CHỨA CÁC TAB PHỤ (VD: BYPASS) -->
+                <div id="nav-group-tool" data-label="tool bypass">
+                    <button onclick="toggleToolMenu()" id="nav-tool-toggle" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                        <span class="flex items-center space-x-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span>Tool</span>
+                        </span>
+                        <svg id="tool-chevron" class="w-4 h-4 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    <div id="toolSubmenu" class="hidden pl-4 ml-6 mt-1 space-y-1 border-l border-slate-100">
+                        <button onclick="selectTab('bypass')" id="nav-bypass" data-label="tool bypass" class="sidebar-btn nav-item w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <span>Bypass</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button onclick="selectTab('note')" id="nav-note" data-label="ghi chú" class="sidebar-btn nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all duration-200">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                     <span>Ghi chú</span>
                 </button>
+
+                <p id="sidebarNoResult" class="hidden text-center text-xs text-slate-400 py-6">Không tìm thấy tab nào.</p>
             </nav>
 
             <div class="p-4 border-t border-slate-100 text-xs text-slate-400 text-center bg-white">
@@ -135,6 +181,7 @@
         </aside>
 
         <main class="flex-1 max-w-6xl w-full mx-auto px-6 py-10 bg-white">
+            <!-- TAB TRANG CHỦ -->
             <section id="content-home" class="tab-content block space-y-12">
                 <div class="max-w-2xl py-4">
                     <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4">
@@ -154,7 +201,7 @@
                     <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
                         <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">02</div>
                         <h3 class="font-semibold text-lg text-slate-900 mb-2">Cập nhật nhanh</h3>
-                        <p class="text-sm text-slate-500 leading-relaxed">Luôn tương thích với các phiên bản vá lỗi mới nhất của trò chơi trong thời gian ngắn.</p>
+                        <p class="text-sm text-slate-500 leading-relaxed">Luôn tương thích với các phiên bản vá lỗi mới nhất của Công Cụ trong thời gian ngắn.</p>
                     </div>
                     <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all duration-200">
                         <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-700 font-semibold">03</div>
@@ -164,6 +211,7 @@
                 </div>
             </section>
 
+            <!-- TAB EXECUTOR -->
             <section id="content-executor" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Danh sách Executor</h2>
@@ -193,7 +241,7 @@
                             </div>
                             
                             <button onclick="openWaitingPage('Delta Executor Global', 'v2.600', 'delta-logo.png', 'delta-global.apk')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Tải về Delta Global (.APK)
+                                Tải về
                             </button>
                         </div>
 
@@ -213,7 +261,7 @@
                             </div>
                             
                             <button onclick="openWaitingPage('Fluxus PC', 'v1.2.0', 'fluxus-logo.png', 'fluxus-global.zip')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Tải về bản PC (.ZIP)
+                                Tải về
                             </button>
                         </div>
                     </div>
@@ -242,7 +290,7 @@
                             </div>
                             
                             <button onclick="openWaitingPage('Delta VNG', 'v2.600', 'delta-vng-logo.png', 'delta-vng.apk')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Tải về Delta VNG (.APK)
+                                Tải về
                             </button>
                         </div>
 
@@ -262,13 +310,14 @@
                             </div>
                             
                             <button onclick="openWaitingPage('Arceus X VNG', 'v2.1.0', 'arceus-logo.png', 'arceus-vng.apk')" class="w-full text-center py-3 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Tải về Arceus VNG (.APK)
+                                Tải về
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- TAB SCRIPT -->
             <section id="content-script" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Kho Script</h2>
@@ -284,7 +333,7 @@
                             </div>
                             <p class="text-xs text-slate-400 mt-1">Cập nhật 2 ngày trước • Hỗ trợ Update mới nhất</p>
                         </div>
-                        <button onclick="copyScript('loadstring(game:HttpGet(&quot;THAY_LINK_SCRIPT_HOHO_TAI_DAY&quot;))()')" 
+                        <button onclick="copyScript('có cc')" 
                             class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
                             Sao chép Script
                         </button>
@@ -298,7 +347,7 @@
                             </div>
                             <p class="text-xs text-slate-400 mt-1">Cập nhật hôm qua • Bản không cần Key</p>
                         </div>
-                        <button onclick="copyScript('loadstring(game:HttpGet(&quot;THAY_LINK_SCRIPT_KING_TAI_DAY&quot;))()')" 
+                        <button onclick="copyScript('có cc')" 
                             class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
                             Sao chép Script
                         </button>
@@ -306,6 +355,113 @@
                 </div>
             </section>
 
+            <!-- TAB MODS APK -->
+            <section id="content-apk" class="tab-content hidden space-y-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">MODS APK</h2>
+                    <p class="text-sm text-slate-500 mt-1">Tải các ứng dụng hỗ trợ cần thiết để cài đặt và sử dụng Executor trên điện thoại.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" id="apkList">
+                    <!-- ZArchiver -->
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                 <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">Normal</span>
+                                <span class="text-xs text-slate-400 font-mono">v2.10.0</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">Z</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900">ZArchiver Pro</h3>
+                                    <p class="text-xs text-slate-400">Giải nén file .zip, .rar</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">giúp quản lý và giải nén file tốc độ cao không quảng cáo.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-xs text-slate-400">💡 <span class="font-medium text-slate-600">Bản Gốc:</span> Bản gốc chuẩn từ nhà phát triển.</p>
+                            <button onclick="openWaitingPage('ZArchiver Pro', 'v2.10.0', 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png', 'zarchiver-pro.apk')" class="w-full text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải Xuống APK ↓
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Termux -->
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">Normal</span>
+                                <span class="text-xs text-slate-400 font-mono">v1.0</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">T</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900">Termux</h3>
+                                    <p class="text-xs text-slate-400">Trình giả lập dòng lệnh Linux</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Công cụ dòng lệnh mạnh mẽ, thường được dùng để hỗ trợ cài đặt và cấu hình nâng cao trên Android.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-xs text-slate-400">💡 <span class="font-medium text-slate-600">Bản Normal:</span> Bản gốc chuẩn từ nhà phát triển.</p>
+                            <button onclick="openWaitingPage('Termux', 'v0.118.0', 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png', 'termux.apk')" class="w-full text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải Xuống APK ↓
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Termux:Boot -->
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                 <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">Normal</span>
+                                <span class="text-xs text-slate-400 font-mono">v1.0</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">T</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900">Termux:Boot</h3>
+                                    <p class="text-xs text-slate-400">Tiện ích mở rộng cho Termux</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Cho phép chạy script Termux tự động ngay khi khởi động thiết bị, hỗ trợ các tác vụ nền cần thiết.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-xs text-slate-400">💡 <span class="font-medium text-slate-600">Bản Gốc:</span> Bản gốc chuẩn từ nhà phát triển.</p>
+                            <button onclick="openWaitingPage('Termux Boot ', 'v1.0', 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png', 'termux-boot-.apk')" class="w-full text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải Xuống APK ↓
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- UG Cloner -->
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                               <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">Normal</span>
+                                <span class="text-xs text-slate-400 font-mono">v1.0</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0 text-lg">U</div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900">UG Cloner</h3>
+                                    <p class="text-xs text-slate-400">Nhân bản ứng dụng không giới hạn</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Nhân bản ứng dụng Roblox hoặc Executor để chạy song song nhiều tài khoản trên cùng một máy.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-xs text-slate-400">💡 <span class="font-medium text-slate-600">Bản Gốc:</span> Bản gốc chuẩn từ nhà phát triển.</p>
+                            <button onclick="openWaitingPage('UG Cloner', 'v1.0', 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png', 'ug-cloner-vip.apk')" class="w-full text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
+                                Tải Xuống APK ↓
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB BYPASS -->
             <section id="content-bypass" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Công Cụ Link Bypass Key</h2>
@@ -313,6 +469,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Card Bypass VIP -->
                     <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
                         <div>
                             <div class="flex items-center justify-between mb-4">
@@ -322,7 +479,7 @@
                             
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0">⚡</div>
-                                <h3 class="font-bold text-xl text-slate-900">Bypass VIP Auto Key</h3>
+                                <h3 class="font-bold text-xl text-slate-900">Bypass CITY</h3>
                             </div>
 
                             <p class="text-sm text-slate-500 mt-3 leading-relaxed">Công cụ vượt link rút gọn tự động tốt nhất hiện nay, bỏ qua Linkvertise, Lootlabs, Gateway chỉ trong vài giây.</p>
@@ -330,7 +487,7 @@
                         
                         <div class="flex items-center space-x-3">
                             <a href="https://bypass.city" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Truy cập Bypass VIP ↗
+                                Truy cập Bypass City↗
                             </a>
                             <button onclick="copyScript('https://bypass.city')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
                                 Copy Link
@@ -347,7 +504,7 @@
                             
                             <div class="flex items-center space-x-3">
                                 <img src="delta-logo.png" alt="Delta Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
-                                <h3 class="font-bold text-xl text-slate-900">Bypass Delta Key</h3>
+                                <h3 class="font-bold text-xl text-slate-900">Bypass VIP</h3>
                             </div>
 
                             <p class="text-sm text-slate-500 mt-3 leading-relaxed">Chuyên dụng để lấy key Delta cực nhanh mà không cần phải thực hiện các nhiệm vụ cài ứng dụng phức tạp.</p>
@@ -355,66 +512,17 @@
                         
                         <div class="flex items-center space-x-3">
                             <a href="https://bypass.vip" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Truy cập Bypass Key ↗
+                                Truy cập Bypass VIP ↗
                             </a>
                             <button onclick="copyScript('https://bypass.vip')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
                                 Copy Link
                             </button>
                         </div>
-                    </div>
-
-                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">Fluxus</span>
-                                <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">● Hoạt động tốt</span>
-                            </div>
-                            
-                            <div class="flex items-center space-x-3">
-                                <img src="fluxus-logo.png" alt="Fluxus Logo" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0">
-                                <h3 class="font-bold text-xl text-slate-900">Bypass Fluxus Key</h3>
-                            </div>
-
-                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Hỗ trợ vượt các cổng link checkpoint lấy Key Fluxus nhanh gọn cho cả máy tính và điện thoại.</p>
-                        </div>
-                        
-                        <div class="flex items-center space-x-3">
-                            <a href="https://fluxusbypass.com" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Truy cập Bypass Fluxus ↗
-                            </a>
-                            <button onclick="copyScript('https://fluxusbypass.com')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
-                                Copy Link
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-6">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-800">Đa Năng</span>
-                                <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">● Hoạt động tốt</span>
-                            </div>
-                            
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center shrink-0">🔓</div>
-                                <h3 class="font-bold text-xl text-slate-900">Bypass AdLinks</h3>
-                            </div>
-
-                            <p class="text-sm text-slate-500 mt-3 leading-relaxed">Hỗ trợ dán link bất kỳ (Linkvertise, Workink, Boost.ink) để lấy link đích trực tiếp.</p>
-                        </div>
-                        
-                        <div class="flex items-center space-x-3">
-                            <a href="https://thepypas.com" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-all duration-200">
-                                Truy cập AdBypass ↗
-                            </a>
-                            <button onclick="copyScript('https://thepypas.com')" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-all">
-                                Copy Link
-                            </button>
-                        </div>
-                    </div>
+                    </div> 
                 </div>
             </section>
 
+            <!-- TAB GHI CHÚ -->
             <section id="content-note" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Ghi chú Cá nhân</h2>
@@ -472,8 +580,36 @@
                 </div>
             </section>
         </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-white border-t border-slate-200">
+            <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center text-center gap-4">
+                <div class="flex items-center gap-2.5">
+                    <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-9 h-9 rounded-full object-cover ring-1 ring-purple-200">
+                    <span class="font-bold text-slate-900 text-base">Pain Tool Website</span>
+                </div>
+
+                <p class="text-xs text-slate-400 max-w-md leading-relaxed">Copyright Pain Gamer © 2026</p>
+
+                <div class="flex items-center gap-3 pt-1">
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                        class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94z"></path></svg>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Youtube"
+                        class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3.02 3.02 0 00-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.56A3.02 3.02 0 00.5 6.2 31.6 31.6 0 000 12a31.6 31.6 0 00.5 5.8 3.02 3.02 0 002.12 2.14c1.88.56 9.38.56 9.38.56s7.5 0 9.38-.56a3.02 3.02 0 002.12-2.14A31.6 31.6 0 0024 12a31.6 31.6 0 00-.5-5.8zM9.6 15.6V8.4l6.27 3.6-6.27 3.6z"></path></svg>
+                    </a>
+                    <a href="https://discord.gg/z7RUNArBuJ" target="_blank" rel="noopener noreferrer" aria-label="Discord"
+                        class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:border-purple-400 hover:text-purple-700 transition-colors duration-200">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 127.14 96.36"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
     </div>
 
+    <!-- MÀN HÌNH ĐẾM NGƯỢC CHỜ TẢI -->
     <div id="waitingScreen" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col justify-center items-center p-4 sm:p-6 w-full">
         <div class="max-w-md w-full rounded-3xl neon-modal p-6 sm:p-8 space-y-6 text-center text-white">
             
@@ -492,7 +628,7 @@
                 <ul class="list-disc list-inside space-y-1 text-slate-300">
                     <li>Tệp tin an toàn và đã qua kiểm duyệt bảo mật.</li>
                     <li>Vui lòng chờ trong giây lát để hệ thống tạo liên kết tải xuống.</li>
-                    <li>Gỡ cài đặt bản Roblox cũ (nếu có) trước khi cài bản mới.</li>
+                    <li>Gỡ cài đặt bản cũ (nếu có) trước khi cài bản mới.</li>
                 </ul>
             </div>
 
@@ -511,6 +647,7 @@
         </div>
     </div>
 
+    <!-- MODAL & TOAST NOTIFICATION -->
     <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all duration-200 opacity-0">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="confirmModalBox">
             <div class="w-12 h-12 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto">
@@ -542,6 +679,7 @@
     <script>
         let timer = null;
 
+        // Cập nhật siteData
         const siteData = [
             { name: "Delta Executor", tab: "executor", icon: "delta-logo.png", category: "Executor" },
             { name: "Fluxus PC", tab: "executor", icon: "fluxus-logo.png", category: "Executor" },
@@ -549,10 +687,12 @@
             { name: "Arceus X VNG", tab: "executor", icon: "arceus-logo.png", category: "Executor" },
             { name: "Blox Fruits - Hoho Hub", tab: "script", icon: "", category: "Script" },
             { name: "King Legacy - Alchemy Hub", tab: "script", icon: "", category: "Script" },
-            { name: "Bypass VIP Auto Key", tab: "bypass", icon: "", category: "Bypass" },
-            { name: "Bypass Delta Key", tab: "bypass", icon: "delta-logo.png", category: "Bypass" },
-            { name: "Bypass Fluxus Key", tab: "bypass", icon: "fluxus-logo.png", category: "Bypass" },
-            { name: "Bypass AdLinks", tab: "bypass", icon: "", category: "Bypass" },
+            { name: "ZArchiver Pro", tab: "apk", icon: "", category: "MODS APK" },
+            { name: "Termux", tab: "apk", icon: "", category: "MODS APK" },
+            { name: "Termux:Boot", tab: "apk", icon: "", category: "MODS APK" },
+            { name: "UG Cloner Premium", tab: "apk", icon: "", category: "MODS APK" },
+            { name: "Bypass CITY", tab: "bypass", icon: "", category: "Bypass" },
+            { name: "Bypass VIP", tab: "bypass", icon: "delta-logo.png", category: "Bypass" },
             { name: "Ghi chú", tab: "note", icon: "", category: "Ghi chú" }
         ];
 
@@ -616,6 +756,12 @@
                 sidebar.classList.remove('-translate-x-full');
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
                 overlay.classList.add('opacity-100');
+
+                const searchInput = document.getElementById('sidebarSearchInput');
+                if (searchInput) {
+                    searchInput.value = '';
+                    filterSidebarTabs();
+                }
             }
         }
 
@@ -645,6 +791,75 @@
             if (activeContent) {
                 activeContent.classList.remove('hidden');
                 activeContent.classList.add('block');
+            }
+
+            const toolToggle = document.getElementById('nav-tool-toggle');
+            if (toolToggle) {
+                if (tabName === 'bypass') {
+                    toggleToolMenu(true);
+                    toolToggle.classList.add('text-purple-700');
+                    toolToggle.classList.remove('text-slate-600');
+                } else {
+                    toolToggle.classList.remove('text-purple-700');
+                    toolToggle.classList.add('text-slate-600');
+                }
+            }
+        }
+
+        function toggleToolMenu(forceOpen) {
+            const submenu = document.getElementById('toolSubmenu');
+            const chevron = document.getElementById('tool-chevron');
+            if (!submenu || !chevron) return;
+
+            const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : submenu.classList.contains('hidden');
+
+            if (shouldOpen) {
+                submenu.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                submenu.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+
+        function filterSidebarTabs() {
+            const query = document.getElementById('sidebarSearchInput').value.trim().toLowerCase();
+            const items = document.querySelectorAll('#sidebarNav .nav-item');
+            const toolGroup = document.getElementById('nav-group-tool');
+            let anyMatch = false;
+            let toolChildMatch = false;
+
+            items.forEach(item => {
+                const label = (item.getAttribute('data-label') || item.textContent).toLowerCase();
+                const isInsideTool = !!item.closest('#toolSubmenu');
+                const match = label.includes(query);
+
+                if (isInsideTool) {
+                    if (match) toolChildMatch = true;
+                    return;
+                }
+
+                item.style.display = match ? '' : 'none';
+                if (match) anyMatch = true;
+            });
+
+            let toolGroupVisible = false;
+            if (toolGroup) {
+                const toolLabel = (toolGroup.getAttribute('data-label') || '').toLowerCase();
+                toolGroupVisible = toolLabel.includes(query) || toolChildMatch;
+                toolGroup.style.display = toolGroupVisible ? '' : 'none';
+                if (toolGroupVisible) anyMatch = true;
+            }
+
+            if (query && toolChildMatch) {
+                toggleToolMenu(true);
+            } else if (!query) {
+                toggleToolMenu(false);
+            }
+
+            const noResultEl = document.getElementById('sidebarNoResult');
+            if (noResultEl) {
+                noResultEl.classList.toggle('hidden', anyMatch);
             }
         }
 
@@ -686,17 +901,47 @@
             globalSearch();
         }
 
+        function toggleHeaderSearch(event) {
+            if (event) event.stopPropagation();
+            const wrap = document.getElementById('searchExpandWrap');
+            const toggleBtn = document.getElementById('searchToggleBtn');
+
+            if (wrap.classList.contains('hidden')) {
+                wrap.classList.remove('hidden');
+                toggleBtn.classList.add('hidden');
+                setTimeout(() => document.getElementById('headerSearchInput').focus(), 10);
+            } else {
+                closeHeaderSearch(event);
+            }
+        }
+
+        function closeHeaderSearch(event) {
+            if (event) event.stopPropagation();
+            const wrap = document.getElementById('searchExpandWrap');
+            const toggleBtn = document.getElementById('searchToggleBtn');
+            const input = document.getElementById('headerSearchInput');
+            const dropdown = document.getElementById('searchResultsDropdown');
+
+            wrap.classList.add('hidden');
+            toggleBtn.classList.remove('hidden');
+            input.value = '';
+            dropdown.classList.add('hidden');
+            dropdown.innerHTML = '';
+            globalSearch();
+        }
+
         function navigateToItem(tabName) {
             selectTab(tabName);
-            document.getElementById('searchResultsDropdown').classList.add('hidden');
-            document.getElementById('headerSearchInput').value = '';
-            globalSearch();
+            closeHeaderSearch();
         }
 
         function closeSearchResults(event) {
             const container = document.getElementById('searchContainer');
             if (container && !container.contains(event.target)) {
-                document.getElementById('searchResultsDropdown').classList.add('hidden');
+                const wrap = document.getElementById('searchExpandWrap');
+                if (wrap && !wrap.classList.contains('hidden')) {
+                    closeHeaderSearch();
+                }
             }
         }
 
