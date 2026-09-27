@@ -11,6 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -94,9 +95,48 @@
         .ui-click-pulse {
             animation: uiClickPulse 0.45s ease-out;
         }
+
+        /* ===== DARK MODE (bật bằng class .dark trên <html>) ===== */
+        html.dark body { background-color: #0f1115; color: #e2e2e6; }
+        html.dark header { background-color: #15171d !important; color: #e2e2e6; border-color: #2a1f3d !important; }
+        html.dark aside#sidebar { background-color: #15171d !important; color: #e2e2e6; }
+        html.dark #sidebar .bg-purple-50 { background-color: #1d1730 !important; }
+        html.dark .bg-white { background-color: #15171d !important; }
+        html.dark .text-slate-800, html.dark .text-slate-900 { color: #e7e7ea !important; }
+        html.dark .text-slate-600, html.dark .text-slate-500, html.dark .text-slate-400 { color: #9a9aa5 !important; }
+        html.dark .border-slate-100, html.dark .border-slate-200 { border-color: #262832 !important; }
+        html.dark .bg-slate-50, html.dark .bg-slate-100 { background-color: #1b1d24 !important; }
+        html.dark .bg-slate-900\/40 { background-color: rgba(0,0,0,0.6) !important; }
+        html.dark .feature-card:hover { box-shadow: 0 0 0 1px rgba(168,85,247,0.18), 0 8px 24px -12px rgba(0,0,0,0.55); }
+        html.dark ::selection { background: #7e22ce; color: #fff; }
+
+        /* ===== KHUNG ĐĂNG NHẬP NỔI (GÓC DƯỚI PHẢI) ===== */
+        #loginWidget {
+            position: fixed;
+            right: 1.25rem;
+            bottom: 1.25rem;
+            z-index: 45;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        #loginWidget.hiding { opacity: 0; transform: translateY(8px); pointer-events: none; }
+
+        .auth-input {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        .auth-input:focus {
+            outline: none;
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 3px rgba(126,34,206,0.14);
+        }
+
+        .theme-swatch {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .theme-swatch:hover { transform: translateY(-2px); }
+        .theme-swatch.active { box-shadow: 0 0 0 2px #7e22ce; }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col" onclick="closeSearchResults(event)">
+<body class="font-sans antialiased text-slate-800 bg-white min-h-full flex flex-col" onclick="closeSearchResults(event); closeAccountMenuOnOutsideClick(event)">
 
     <!-- GIAO DIỆN CHÍNH -->
     <div id="mainApp" class="min-h-full flex flex-col">
@@ -118,29 +158,68 @@
                     <span class="font-bold text-lg tracking-tight text-purple-700 hidden sm:inline-block">Pain Tool - Trang Web Tải Hack Roblox</span>
                 </div>
 
-                <div class="relative shrink-0" id="searchContainer">
-                    <button id="searchToggleBtn" onclick="toggleHeaderSearch(event)" aria-label="Mở tìm kiếm"
-                        class="p-2.5 rounded-xl text-slate-600 hover:bg-purple-600 hover:text-white transition-colors duration-200 focus:outline-none">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </button>
-
-                    <div id="searchExpandWrap" class="hidden absolute right-0 top-1/2 -translate-y-1/2 w-56 sm:w-80">
-                        <div class="relative">
-                            <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm script, executor, bypass..." 
-                                class="w-full pl-9 pr-9 py-2 bg-white border-2 border-purple-700 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-200">
-                            <svg class="w-4 h-4 absolute left-3 top-2.5 text-purple-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <div class="relative shrink-0" id="searchContainer">
+                        <button id="searchToggleBtn" onclick="toggleHeaderSearch(event)" aria-label="Mở tìm kiếm"
+                            class="p-2.5 rounded-xl text-slate-600 hover:bg-purple-600 hover:text-white transition-colors duration-200 focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
-                            <button onclick="closeHeaderSearch(event)" aria-label="Đóng tìm kiếm"
-                                class="absolute right-2.5 top-2 text-slate-400 hover:text-purple-700 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
+                        </button>
 
-                            <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
+                        <div id="searchExpandWrap" class="hidden absolute right-0 top-1/2 -translate-y-1/2 w-56 sm:w-80">
+                            <div class="relative">
+                                <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm script, executor, bypass..." 
+                                    class="w-full pl-9 pr-9 py-2 bg-white border-2 border-purple-700 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-200">
+                                <svg class="w-4 h-4 absolute left-3 top-2.5 text-purple-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <button onclick="closeHeaderSearch(event)" aria-label="Đóng tìm kiếm"
+                                    class="absolute right-2.5 top-2 text-slate-400 hover:text-purple-700 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+
+                                <div id="searchResultsDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-80 overflow-y-auto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KHU VỰC TÀI KHOẢN: ICON BÁNH RĂNG + MENU -->
+                    <div class="relative shrink-0" id="accountMenuContainer">
+                        <button id="accountGearBtn" onclick="toggleAccountMenu(event)" aria-label="Tài khoản"
+                            class="p-2.5 rounded-xl text-slate-600 hover:bg-purple-600 hover:text-white transition-colors duration-200 focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </button>
+
+                        <div id="accountMenuDropdown" class="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden z-50 py-1.5">
+                            <!-- Chưa đăng nhập -->
+                            <div id="accountMenuLoggedOut">
+                                <button onclick="openLoginModal()" class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                                    Đăng nhập
+                                </button>
+                            </div>
+                            <!-- Đã đăng nhập -->
+                            <div id="accountMenuLoggedIn" class="hidden">
+                                <button onclick="openInfoModal()" class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Thông tin
+                                </button>
+                                <button onclick="openSettingsModal()" class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    Cài đặt
+                                </button>
+                                <div class="my-1 border-t border-slate-100"></div>
+                                <button onclick="logoutUser()" class="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                    Đăng xuất
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -728,6 +807,170 @@
         </div>
     </div>
 
+    <!-- ================= KHUNG ĐĂNG NHẬP NỔI (GÓC DƯỚI PHẢI) ================= -->
+    <div id="loginWidget" class="hidden">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-xl shadow-purple-900/5 p-4 w-64 relative">
+            <button onclick="dismissLoginWidget()" aria-label="Đóng" class="absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-md hover:bg-slate-900 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="flex items-center gap-2.5 mb-2.5">
+                <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-purple-200">
+                <div>
+                    <p class="text-sm font-bold text-slate-900 leading-tight">Pain Tool</p>
+                    <p class="text-[11px] text-slate-400 leading-tight">Đăng nhập để mở khoá thêm</p>
+                </div>
+            </div>
+            <button onclick="openLoginModal()" class="w-full py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-colors shadow-sm">
+                Đăng nhập
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= MODAL ĐĂNG NHẬP: BƯỚC TOKEN / BƯỚC 2FA ================= -->
+    <div id="loginModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md hidden transition-all duration-200 opacity-0">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-200" id="loginModalBox">
+
+            <!-- LOGO + MÔ TẢ NGẮN -->
+            <div class="flex flex-col items-center text-center mb-5">
+                <img src="https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png" alt="Pain Gamer Logo" class="w-14 h-14 rounded-2xl object-cover ring-1 ring-purple-200 mb-3">
+                <h3 class="text-lg font-bold text-slate-900">Đăng nhập Pain Tool</h3>
+                <p class="text-xs text-slate-400 mt-1">Dùng Token nhận được từ lệnh <span class="font-semibold text-purple-700">/token</span> trên Discord để đăng nhập.</p>
+            </div>
+
+            <!-- BƯỚC 1: NHẬP TOKEN -->
+            <div id="loginStepToken" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Token</label>
+                    <input type="text" id="tokenInput" placeholder="pain_xxxxxxxxxxxx" autocomplete="off"
+                        class="auth-input w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white">
+                    <p id="tokenErrorMsg" class="hidden text-xs text-red-500 mt-1.5"></p>
+                </div>
+                <div class="flex items-center space-x-3 pt-1">
+                    <button onclick="closeLoginModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl transition-colors">
+                        Hủy
+                    </button>
+                    <button id="tokenSubmitBtn" onclick="submitToken()" class="w-1/2 py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-colors shadow-sm">
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
+
+            <!-- BƯỚC 2: NHẬP 2FA (Ẩn cho tới khi Token hợp lệ) -->
+            <div id="loginStep2fa" class="space-y-4 hidden">
+                <div class="flex items-center gap-3 bg-purple-50 border border-purple-100 rounded-xl p-3">
+                    <img id="twofaAvatarPreview" src="" alt="" class="w-9 h-9 rounded-full object-cover hidden">
+                    <div>
+                        <p class="text-sm font-semibold text-slate-800" id="twofaUsernamePreview">—</p>
+                        <p class="text-[11px] text-slate-400">Token hợp lệ, vui lòng nhập mã 2FA</p>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Mã 2FA (dùng lệnh <span class="font-semibold text-purple-700">/2fa</span> trên Discord để lấy mã)</label>
+                    <input type="text" id="twofaInput" maxlength="6" placeholder="------" autocomplete="off"
+                        class="auth-input w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm tracking-[0.5em] text-center font-semibold focus:bg-white">
+                    <p id="twofaErrorMsg" class="hidden text-xs text-red-500 mt-1.5"></p>
+                </div>
+                <div class="flex items-center space-x-3 pt-1">
+                    <button onclick="closeLoginModal()" class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-xl transition-colors">
+                        Hủy
+                    </button>
+                    <button id="twofaSubmitBtn" onclick="submit2fa()" class="w-1/2 py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-medium text-sm rounded-xl transition-colors shadow-sm">
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL THÔNG TIN TÀI KHOẢN ================= -->
+    <div id="infoModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md hidden transition-all duration-200 opacity-0">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="infoModalBox">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="text-base font-bold text-slate-900">Thông tin tài khoản</h3>
+                <button onclick="closeInfoModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="flex flex-col items-center text-center">
+                <img id="infoAvatar" src="" alt="Avatar" class="w-20 h-20 rounded-2xl object-cover ring-2 ring-purple-200 mb-3">
+                <p id="infoDisplayName" class="text-base font-bold text-slate-900">—</p>
+                <p id="infoUsername" class="text-xs text-slate-400">@—</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1.5">Token đã đăng nhập</label>
+                <div class="flex items-center gap-2">
+                    <input id="infoTokenValue" type="password" readonly value="—"
+                        class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono">
+                    <button onclick="toggleInfoTokenVisibility()" id="infoTokenToggleBtn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" aria-label="Hiện/ẩn token">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </button>
+                    <button onclick="copyScript(document.getElementById('infoTokenValue').value)" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" aria-label="Sao chép token">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    </button>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1.5">Tuyệt đối không chia sẻ token này cho bất kỳ ai khác.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL CÀI ĐẶT ================= -->
+    <div id="settingsModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-md hidden transition-all duration-200 opacity-0">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-6 transform scale-95 transition-transform duration-200" id="settingsModalBox">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <h3 class="text-base font-bold text-slate-900">Cài đặt</h3>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- GIAO DIỆN -->
+            <div>
+                <p class="text-xs font-semibold text-slate-600 mb-2.5">Giao diện</p>
+                <div class="flex gap-3">
+                    <button id="themeBtnLight" onclick="setTheme('light')" class="theme-swatch flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl border border-slate-200 bg-white">
+                        <span class="w-full h-8 rounded-md bg-white border border-slate-200"></span>
+                        <span class="text-xs font-medium text-slate-600">Sáng</span>
+                    </button>
+                    <button id="themeBtnDark" onclick="setTheme('dark')" class="theme-swatch flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl border border-slate-200 bg-white">
+                        <span class="w-full h-8 rounded-md bg-slate-900 border border-slate-700"></span>
+                        <span class="text-xs font-medium text-slate-600">Tối</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TOKEN -->
+            <div>
+                <p class="text-xs font-semibold text-slate-600 mb-2.5">Token đăng nhập</p>
+                <div class="flex items-center gap-2">
+                    <input id="settingsTokenValue" type="password" readonly value="—"
+                        class="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono">
+                    <button onclick="toggleSettingsTokenVisibility()" id="settingsTokenToggleBtn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors" aria-label="Hiện/ẩn token">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </button>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1.5">Không chia sẻ token cho bất kỳ ai để tránh mất quyền truy cập.</p>
+            </div>
+
+            <!-- THÔNG BÁO -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-semibold text-slate-800">Âm thanh thao tác</p>
+                    <p class="text-[11px] text-slate-400">Tiếng click nhẹ khi bấm nút</p>
+                </div>
+                <button id="soundToggleBtn" onclick="toggleSoundSetting()" class="relative w-11 h-6 rounded-full bg-purple-700 transition-colors duration-200">
+                    <span id="soundToggleDot" class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200 translate-x-5"></span>
+                </button>
+            </div>
+
+            <!-- ĐĂNG XUẤT -->
+            <button onclick="logoutUser()" class="w-full py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-medium text-sm rounded-xl transition-colors">
+                Đăng xuất khỏi thiết bị này
+            </button>
+        </div>
+    </div>
+
     <!-- MODAL CHÈN HÌNH ẢNH MỚI (CHO WEB) -->
     <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all duration-200 opacity-0">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="imageModalBox">
@@ -817,10 +1060,309 @@
         let timer = null;
         let currentNotePass = ''; // Biến lưu mật khẩu đang mở
 
+        const API_BASE = window.PAIN_API_BASE || 'botclone-production.up.railway.app';
+
+        const AUTH_STORAGE_KEY = 'painAuth';
+        let pendingLoginToken = null; // token đang chờ xác minh 2FA
+
+        function getAuthState() {
+            try {
+                const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) { return null; }
+        }
+
+        function setAuthState(state) {
+            localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function clearAuthState() {
+            localStorage.removeItem(AUTH_STORAGE_KEY);
+        }
+
+        async function apiPost(path, body) {
+            try {
+                const res = await fetch(`${API_BASE}${path}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body || {})
+                });
+                return await res.json();
+            } catch (err) {
+                return { success: false, message: 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau!' };
+            }
+        }
+
+        function initAuthUI() {
+            const auth = getAuthState();
+            const loggedIn = !!(auth && auth.token);
+
+            document.getElementById('accountMenuLoggedOut').classList.toggle('hidden', loggedIn);
+            document.getElementById('accountMenuLoggedIn').classList.toggle('hidden', !loggedIn);
+
+            const widget = document.getElementById('loginWidget');
+            const dismissed = sessionStorage.getItem('loginWidgetDismissed') === 'true';
+            if (!loggedIn && !dismissed) {
+                widget.classList.remove('hidden');
+            } else {
+                widget.classList.add('hidden');
+            }
+        }
+
+        function dismissLoginWidget() {
+            const widget = document.getElementById('loginWidget');
+            widget.classList.add('hiding');
+            sessionStorage.setItem('loginWidgetDismissed', 'true');
+            setTimeout(() => widget.classList.add('hidden'), 200);
+        }
+
+        function toggleAccountMenu(event) {
+            if (event) event.stopPropagation();
+            document.getElementById('accountMenuDropdown').classList.toggle('hidden');
+        }
+
+        function closeAccountMenuOnOutsideClick(event) {
+            const container = document.getElementById('accountMenuContainer');
+            const dropdown = document.getElementById('accountMenuDropdown');
+            if (container && dropdown && !container.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        }
+
+        /* ---------- MỞ / ĐÓNG MODAL ĐĂNG NHẬP ---------- */
+        function openLoginModal() {
+            document.getElementById('accountMenuDropdown').classList.add('hidden');
+            pendingLoginToken = null;
+            document.getElementById('tokenInput').value = '';
+            document.getElementById('twofaInput').value = '';
+            document.getElementById('tokenErrorMsg').classList.add('hidden');
+            document.getElementById('twofaErrorMsg').classList.add('hidden');
+            document.getElementById('loginStepToken').classList.remove('hidden');
+            document.getElementById('loginStep2fa').classList.add('hidden');
+
+            const modal = document.getElementById('loginModal');
+            const box = document.getElementById('loginModalBox');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+                document.getElementById('tokenInput').focus();
+            }, 10);
+        }
+
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            const box = document.getElementById('loginModalBox');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 200);
+        }
+
+        async function submitToken() {
+            const tokenVal = document.getElementById('tokenInput').value.trim();
+            const errEl = document.getElementById('tokenErrorMsg');
+            errEl.classList.add('hidden');
+
+            if (!tokenVal) {
+                errEl.textContent = 'Vui lòng nhập token!';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('tokenSubmitBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Đang kiểm tra...';
+            btn.disabled = true;
+
+            const result = await apiPost('/api/login/token', { token: tokenVal });
+
+            btn.textContent = originalText;
+            btn.disabled = false;
+
+            if (!result || !result.success) {
+                errEl.textContent = (result && result.message) || 'Token không hợp lệ!';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            pendingLoginToken = tokenVal;
+
+            const preview = result.user || {};
+            document.getElementById('twofaUsernamePreview').textContent = preview.displayName || preview.username || 'Tài khoản Discord';
+            const avatarPrev = document.getElementById('twofaAvatarPreview');
+            if (preview.avatar) {
+                avatarPrev.src = preview.avatar;
+                avatarPrev.classList.remove('hidden');
+            } else {
+                avatarPrev.classList.add('hidden');
+            }
+
+            document.getElementById('loginStepToken').classList.add('hidden');
+            document.getElementById('loginStep2fa').classList.remove('hidden');
+            document.getElementById('twofaInput').focus();
+        }
+
+        async function submit2fa() {
+            const codeVal = document.getElementById('twofaInput').value.trim();
+            const errEl = document.getElementById('twofaErrorMsg');
+            errEl.classList.add('hidden');
+
+            if (!codeVal || codeVal.length !== 6) {
+                errEl.textContent = 'Vui lòng nhập đủ 6 chữ số mã 2FA!';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('twofaSubmitBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Đang xác minh...';
+            btn.disabled = true;
+
+            const result = await apiPost('/api/login/2fa', { token: pendingLoginToken, code: codeVal });
+
+            btn.textContent = originalText;
+            btn.disabled = false;
+
+            if (!result || !result.success) {
+                errEl.textContent = (result && result.message) || 'Mã 2FA không đúng hoặc đã hết hạn!';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            setAuthState({ token: pendingLoginToken, user: result.user || {} });
+            pendingLoginToken = null;
+            closeLoginModal();
+            initAuthUI();
+            showToast('Đăng nhập thành công!');
+        }
+
+        /* ---------- THÔNG TIN TÀI KHOẢN ---------- */
+        function openInfoModal() {
+            document.getElementById('accountMenuDropdown').classList.add('hidden');
+            const auth = getAuthState();
+            if (!auth) { showToast('Bạn chưa đăng nhập!'); return; }
+
+            const user = auth.user || {};
+            document.getElementById('infoAvatar').src = user.avatar || 'https://i.postimg.cc/gJbhCmHL/Pain-Gamer.png';
+            document.getElementById('infoDisplayName').textContent = user.displayName || 'Chưa rõ tên';
+            document.getElementById('infoUsername').textContent = '@' + (user.username || 'unknown');
+            document.getElementById('infoTokenValue').value = auth.token || '—';
+            document.getElementById('infoTokenValue').type = 'password';
+
+            const modal = document.getElementById('infoModal');
+            const box = document.getElementById('infoModalBox');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeInfoModal() {
+            const modal = document.getElementById('infoModal');
+            const box = document.getElementById('infoModalBox');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 200);
+        }
+
+        function toggleInfoTokenVisibility() {
+            const input = document.getElementById('infoTokenValue');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        /* ---------- CÀI ĐẶT ---------- */
+        function openSettingsModal() {
+            document.getElementById('accountMenuDropdown').classList.add('hidden');
+            const auth = getAuthState();
+            document.getElementById('settingsTokenValue').value = (auth && auth.token) || '—';
+            document.getElementById('settingsTokenValue').type = 'password';
+
+            updateThemeSwatches();
+            updateSoundToggleUI();
+
+            const modal = document.getElementById('settingsModal');
+            const box = document.getElementById('settingsModalBox');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            const box = document.getElementById('settingsModalBox');
+            modal.classList.add('opacity-0');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 200);
+        }
+
+        function toggleSettingsTokenVisibility() {
+            const input = document.getElementById('settingsTokenValue');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function setTheme(mode) {
+            const isDark = mode === 'dark';
+            document.documentElement.classList.toggle('dark', isDark);
+            localStorage.setItem('painTheme', mode);
+            updateThemeSwatches();
+        }
+
+        function updateThemeSwatches() {
+            const mode = localStorage.getItem('painTheme') || 'light';
+            document.getElementById('themeBtnLight').classList.toggle('active', mode === 'light');
+            document.getElementById('themeBtnDark').classList.toggle('active', mode === 'dark');
+        }
+
+        function initTheme() {
+            const mode = localStorage.getItem('painTheme') || 'light';
+            document.documentElement.classList.toggle('dark', mode === 'dark');
+        }
+
+        function toggleSoundSetting() {
+            const enabled = localStorage.getItem('painSoundEnabled') !== 'false';
+            localStorage.setItem('painSoundEnabled', enabled ? 'false' : 'true');
+            updateSoundToggleUI();
+        }
+
+        function updateSoundToggleUI() {
+            const enabled = localStorage.getItem('painSoundEnabled') !== 'false';
+            const btn = document.getElementById('soundToggleBtn');
+            const dot = document.getElementById('soundToggleDot');
+            if (!btn || !dot) return;
+            btn.classList.toggle('bg-purple-700', enabled);
+            btn.classList.toggle('bg-slate-300', !enabled);
+            dot.classList.toggle('translate-x-5', enabled);
+            dot.classList.toggle('translate-x-0', !enabled);
+        }
+
+        function logoutUser() {
+            clearAuthState();
+            closeInfoModal();
+            closeSettingsModal();
+            initAuthUI();
+            sessionStorage.removeItem('loginWidgetDismissed');
+            showToast('Đã đăng xuất!');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initAuthUI();
+        });
+
         // ÂM THANH & HIỆU ỨNG KHI BẤM NÚT
         let audioCtx = null;
         function playClickSound() {
             try {
+                if (localStorage.getItem('painSoundEnabled') === 'false') return;
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 }
