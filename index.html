@@ -974,13 +974,6 @@
                 </button>
             </div>
 
-            <!-- ĐĂNG XUẤT -->
-            <button onclick="logoutUser()" class="w-full py-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-medium text-sm rounded-xl transition-colors">
-                Đăng xuất khỏi thiết bị này
-            </button>
-        </div>
-    </div>
-
     <!-- MODAL CHÈN HÌNH ẢNH MỚI (CHO WEB) -->
     <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all duration-200 opacity-0">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 transform scale-95 transition-transform duration-200" id="imageModalBox">
@@ -1122,7 +1115,7 @@
 
             // Kiểm tra hết hạn ngay trên thiết bị (không cần mạng)
             if (!auth.sessionId || !auth.loginAt || Date.now() - auth.loginAt > SESSION_TTL_MS) {
-                forceLogout('Phiên đăng nhập đã hết hạn (4 ngày), vui lòng đăng nhập lại!');
+                forceLogout('Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại!');
                 return;
             }
 
@@ -1131,7 +1124,7 @@
             if (!result || !result.success) return; // lỗi mạng: giữ nguyên phiên, thử lại lần sau
             if (result.valid === false) {
                 const messages = {
-                    expired: 'Phiên đăng nhập đã hết hạn (4 ngày), vui lòng đăng nhập lại!',
+                    expired: 'Phiên đăng nhập đã hết hạn vui lòng đăng nhập lại!',
                     other_device: 'Token của bạn vừa được đăng nhập trên thiết bị khác, bạn đã bị đăng xuất!',
                     token_changed: 'Token đã bị thay đổi, vui lòng đăng nhập lại!'
                 };
