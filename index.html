@@ -1103,6 +1103,51 @@
             }
         }
 
+        // ---- PHIÊN ĐĂNG NHẬP: tự hết hạn sau 4 ngày, mỗi token chỉ 1 thiết bị ----
+        const SESSION_TTL_MS = 4 * 24 * 60 * 60 * 1000;
+        const SESSION_CHECK_INTERVAL_MS = 30 * 1000;
+
+        function forceLogout(message) {
+            clearAuthState();
+            closeInfoModal();
+            closeSettingsModal();
+            sessionStorage.removeItem('loginWidgetDismissed');
+            initAuthUI();
+            showToast(message);
+        }
+
+        async function checkSession() {
+            const auth = getAuthState();
+            if (!auth || !auth.token) return;
+
+            // Kiểm tra hết hạn ngay trên thiết bị (không cần mạng)
+            if (!auth.sessionId || !auth.loginAt || Date.now() - auth.loginAt > SESSION_TTL_MS) {
+                forceLogout('Phiên đăng nhập đã hết hạn (4 ngày), vui lòng đăng nhập lại!');
+                return;
+            }
+
+            // Hỏi máy chủ: đăng nhập ở thiết bị khác / token bị reset / hết hạn
+            const result = await apiPost('/api/session/check', { token: auth.token, sessionId: auth.sessionId });
+            if (!result || !result.success) return; // lỗi mạng: giữ nguyên phiên, thử lại lần sau
+            if (result.valid === false) {
+                const messages = {
+                    expired: 'Phiên đăng nhập đã hết hạn (4 ngày), vui lòng đăng nhập lại!',
+                    other_device: 'Token của bạn vừa được đăng nhập trên thiết bị khác, bạn đã bị đăng xuất!',
+                    token_changed: 'Token đã bị thay đổi, vui lòng đăng nhập lại!'
+                };
+                forceLogout(messages[result.reason] || 'Phiên đăng nhập không còn hợp lệ!');
+            }
+        }
+
+        function startSessionWatcher() {
+            checkSession();
+            setInterval(checkSession, SESSION_CHECK_INTERVAL_MS);
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') checkSession();
+            });
+            window.addEventListener('focus', checkSession);
+        }
+
         function initAuthUI() {
             const auth = getAuthState();
             const loggedIn = !!(auth && auth.token);
@@ -1241,7 +1286,12 @@
                 return;
             }
 
-            setAuthState({ token: pendingLoginToken, user: result.user || {} });
+            setAuthState({
+                token: pendingLoginToken,
+                sessionId: result.sessionId,
+                loginAt: result.loginAt || Date.now(),
+                user: result.user || {}
+            });
             pendingLoginToken = null;
             closeLoginModal();
             initAuthUI();
@@ -1366,6 +1416,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
             initAuthUI();
+            startSessionWatcher();
         });
 
         // ÂM THANH & HIỆU ỨNG KHI BẤM NÚT
