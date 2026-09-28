@@ -803,7 +803,7 @@
             </div>
 
             <div class="relative w-full">
-                <a id="downloadBtn" href="#" target="_blank" rel="noopener noreferrer" class="relative block w-full py-3.5 bg-slate-800/80 text-slate-400 font-medium text-sm rounded-xl overflow-hidden cursor-not-allowed pointer-events-none transition-all duration-300 border border-purple-900/50">
+                <a id="downloadBtn" href="#" class="relative block w-full py-3.5 bg-slate-800/80 text-slate-400 font-medium text-sm rounded-xl overflow-hidden cursor-not-allowed pointer-events-none transition-all duration-300 border border-purple-900/50">
                     <div id="progressBar" class="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-purple-600 to-indigo-600 h-full w-0 transition-all duration-1000 ease-linear shadow-lg shadow-purple-500/50"></div>
                     <span id="downloadBtnText" class="relative z-10">Vui lòng chờ 5 giây...</span>
                 </a>
@@ -1460,14 +1460,41 @@
                     downloadBtnText.textContent = "Tải xuống ngay";
                     downloadBtnText.className = "relative z-10 text-white font-semibold tracking-wide";
                     downloadBtn.href = file;
-                    // Lưu ý: thuộc tính "download" bị trình duyệt bỏ qua với link khác domain (VD: GitHub),
-                    // nên ta mở file ở tab mới (target="_blank" đã đặt sẵn trên thẻ <a>) để không làm
-                    // "treo" thanh loading của tab chính đang hiển thị website.
-                    
+                    // Tải ngay trong trang: không chuyển trang, không mở tab mới
+                    downloadBtn.onclick = (e) => {
+                        e.preventDefault();
+                        triggerDownload(file);
+                    };
+
                     downloadBtn.classList.remove('bg-slate-800/80', 'text-slate-400', 'cursor-not-allowed', 'pointer-events-none');
                     downloadBtn.classList.add('bg-purple-600', 'hover:bg-purple-500', 'shadow-lg', 'shadow-purple-600/50', 'border-purple-400');
                 }
             }, 1000);
+        }
+
+        // Tải file ngay trong trang (không điều hướng, không mở tab mới)
+        function triggerDownload(url) {
+            let sameOrigin = false;
+            try { sameOrigin = new URL(url, location.href).origin === location.origin; } catch (e) {}
+
+            if (sameOrigin) {
+                // File cùng domain: dùng thẻ <a download> tạm thời
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = decodeURIComponent(url.split('/').pop().split('?')[0]) || '';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            } else {
+                // File khác domain (VD: GitHub Releases): dùng iframe ẩn để trình duyệt tự tải
+                // mà trang hiện tại không bị chuyển hướng
+                const frame = document.createElement('iframe');
+                frame.style.display = 'none';
+                frame.src = url;
+                document.body.appendChild(frame);
+                setTimeout(() => frame.remove(), 120000);
+            }
+            showToast('Đang bắt đầu tải xuống...');
         }
 
         function closeWaitingPage() {
