@@ -494,32 +494,54 @@
                 </div>
 
                 <div class="space-y-4" id="scriptList">
-                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <div class="flex items-center space-x-2">
-                                <span class="font-semibold text-slate-900">Blox Fruits - Hoho Hub</span>
-                                <span class="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded">Auto Farm</span>
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-semibold text-slate-900">Blox Fruits - Hoho Hub</span>
+                                    <span class="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded">Auto Farm</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Cập nhật 2 ngày trước • Hỗ trợ Update mới nhất</p>
+                                <span class="inline-block mt-2 text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">Get Key: NO</span>
                             </div>
-                            <p class="text-xs text-slate-400 mt-1">Cập nhật 2 ngày trước • Hỗ trợ Update mới nhất</p>
+                            <button onclick="copyScript('có cc')" 
+                                class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
+                                Sao chép Script
+                            </button>
                         </div>
-                        <button onclick="copyScript('có cc')" 
-                            class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
-                            Sao chép Script
-                        </button>
+                        <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                            <span class="text-xs font-medium text-slate-500 shrink-0">Link Get Key:</span>
+                            <span id="scriptKeyLink-bloxfruits" class="flex-1 min-w-0 text-xs text-purple-700 truncate">DAN_LINK_GET_KEY_BLOX_FRUITS_TAI_DAY</span>
+                            <button onclick="copyScript(document.getElementById('scriptKeyLink-bloxfruits').textContent.trim())"
+                                class="shrink-0 px-2.5 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-md text-[11px] font-semibold transition-all">
+                                Copy Link
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <div class="flex items-center space-x-2">
-                                <span class="font-semibold text-slate-900">King Legacy - Alchemy Hub</span>
-                                <span class="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded">Fast Attack</span>
+                    <div class="searchable-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-semibold text-slate-900">King Legacy - Alchemy Hub</span>
+                                    <span class="text-xs bg-purple-100 text-purple-700 font-medium px-2 py-0.5 rounded">Fast Attack</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">Cập nhật hôm qua • Bản không cần Key</p>
+                                <span class="inline-block mt-2 text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700">Get Key: NO</span>
                             </div>
-                            <p class="text-xs text-slate-400 mt-1">Cập nhật hôm qua • Bản không cần Key</p>
+                            <button onclick="copyScript('có cc')" 
+                                class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
+                                Sao chép Script
+                            </button>
                         </div>
-                        <button onclick="copyScript('có cc')" 
-                            class="px-4 py-2.5 bg-purple-700 hover:bg-purple-800 text-white text-sm font-medium rounded-xl transition-all duration-200 shrink-0">
-                            Sao chép Script
-                        </button>
+                        <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                            <span class="text-xs font-medium text-slate-500 shrink-0">Link Get Key:</span>
+                            <span id="scriptKeyLink-kinglegacy" class="flex-1 min-w-0 text-xs text-purple-700 truncate">DAN_LINK_GET_KEY_KING_LEGACY_TAI_DAY</span>
+                            <button onclick="copyScript(document.getElementById('scriptKeyLink-kinglegacy').textContent.trim())"
+                                class="shrink-0 px-2.5 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-md text-[11px] font-semibold transition-all">
+                                Copy Link
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1586,16 +1608,19 @@
             }
         }
 
-        // ---- SUBPATH RIÊNG CHO TỪNG TAB (URL đẹp, dễ chia sẻ và lên Google) ----
-        const TAB_PATHS = {
-            home: '/',
-            executor: '/executor',
-            script: '/script',
-            apk: '/mods-apk',
-            bypass: '/bypass',
-            note: '/ghi-chu'
+        // ---- SUBPATH RIÊNG CHO TỪNG TAB, DÙNG DẤU # ----
+        // Dùng dạng "/#executor" thay vì "/executor" thật: trình duyệt KHÔNG BAO GIỜ gửi phần
+        // sau dấu # lên server, nên khi tải lại trang (F5) hoặc dán link, server luôn chỉ nhận
+        // yêu cầu tới trang gốc "/" (không bao giờ bị 404), còn JS sẽ tự đọc phần # để mở đúng tab.
+        const TAB_HASHES = {
+            home: '',
+            executor: 'executor',
+            script: 'script',
+            apk: 'mods-apk',
+            bypass: 'bypass',
+            note: 'ghi-chu'
         };
-        const PATH_TABS = Object.fromEntries(Object.entries(TAB_PATHS).map(([tab, path]) => [path, tab]));
+        const HASH_TABS = Object.fromEntries(Object.entries(TAB_HASHES).map(([tab, h]) => [h, tab]));
         const TAB_TITLES = {
             home: 'Pain Tool - Trang Tải Hack Roblox và Script Farm Siêu Mượt',
             executor: 'Executor Roblox (Delta, Fluxus, Arceus X) - Pain Tool',
@@ -1607,20 +1632,23 @@
         const BASE_TITLE = document.title;
 
         function updateUrlForTab(tabName, replace) {
-            const path = TAB_PATHS[tabName] || '/';
-            if (location.pathname !== path) {
-                history[replace ? 'replaceState' : 'pushState']({ tab: tabName }, '', path);
+            const hash = TAB_HASHES[tabName] || '';
+            const url = hash ? ('/#' + hash) : '/';
+            if (location.pathname + location.hash !== url) {
+                history[replace ? 'replaceState' : 'pushState']({ tab: tabName }, '', url);
             }
             document.title = TAB_TITLES[tabName] || BASE_TITLE;
         }
 
         function initRouteFromUrl() {
-            const tab = PATH_TABS[location.pathname] || 'home';
+            const hash = location.hash.replace(/^#\/?/, '');
+            const tab = HASH_TABS[hash] || 'home';
             selectTab(tab, true);
         }
 
         window.addEventListener('popstate', (e) => {
-            const tab = (e.state && e.state.tab) || PATH_TABS[location.pathname] || 'home';
+            const hash = location.hash.replace(/^#\/?/, '');
+            const tab = (e.state && e.state.tab) || HASH_TABS[hash] || 'home';
             selectTab(tab, true);
         });
 
