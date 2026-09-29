@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi" class="h-full bg-white">
 <head>
+    <!--
+      © 2026 Pain Gamer - Pain Tool. Bảo lưu mọi quyền.
+      Mã nguồn, giao diện và nội dung của trang này thuộc quyền sở hữu của Pain Gamer.
+      Nghiêm cấm sao chép, chỉnh sửa, phân phối lại hoặc sử dụng cho mục đích khác khi chưa được cho phép.
+    -->
     <meta charset="UTF-8">
+    <meta name="author" content="Pain Gamer">
+    <meta name="copyright" content="© 2026 Pain Gamer - Pain Tool">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light only">
     <title>Pain Tool - Trang Tải Hack Roblox và Script Farm Siêu Mượt</title>
@@ -179,14 +186,14 @@
                             </svg>
                         </button>
 
-                        <div id="searchExpandWrap" class="hidden absolute right-0 top-1/2 -translate-y-1/2 w-56 sm:w-80">
+                        <div id="searchExpandWrap" class="hidden absolute right-0 top-1/2 -translate-y-1/2 w-40 sm:w-64 max-w-[70vw]">
                             <div class="relative">
-                                <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm script, executor, bypass..." 
+                                <input type="text" id="headerSearchInput" oninput="handleSearchInput()" placeholder="Tìm kiếm" 
                                     class="w-full pl-9 pr-9 py-2 bg-white border-2 border-purple-700 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-300 transition-all duration-200">
                                 <svg class="w-4 h-4 absolute left-3 top-2.5 text-purple-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
-                                <button onclick="closeHeaderSearch(event)" aria-label="Đóng tìm kiếm"
+                                <button onclick="clearHeaderSearch(event)" aria-label="Xóa nội dung tìm kiếm"
                                     class="absolute right-2.5 top-2 text-slate-400 hover:text-purple-700 transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -260,7 +267,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                     <input type="text" id="sidebarSearchInput" oninput="filterSidebarTabs()" placeholder="Tìm tab..."
-                        class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-purple-400 focus:bg-white transition-colors duration-200">
+                        class="w-full pl-9 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-purple-400 focus:bg-white transition-colors duration-200">
+                    <button onclick="clearSidebarSearch()" aria-label="Xóa nội dung tìm kiếm"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-purple-700 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -371,7 +384,7 @@
             <section id="content-executor" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Danh sách Executor</h2>
-                    <p class="text-sm text-slate-500 mt-1">Lựa chọn Trình thực thi phù hợp với thiết bị của bạn.</p>
+                    <p class="text-sm text-slate-500 mt-1">Chọn Executor Mà Bạn Muốn Tải</p>
                 </div>
 
                 <div class="space-y-4">
@@ -477,7 +490,7 @@
             <section id="content-script" class="tab-content hidden space-y-8">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Kho Script</h2>
-                    <p class="text-sm text-slate-500 mt-1">Sao chép script cho tựa game yêu thích của bạn.</p>
+                    <p class="text-sm text-slate-500 mt-1">Sao chép script cho tựa game yêu thích của bạn!</p>
                 </div>
 
                 <div class="space-y-4" id="scriptList">
@@ -1412,6 +1425,7 @@
             initTheme();
             initAuthUI();
             startSessionWatcher();
+            initRouteFromUrl();
         });
 
         // ÂM THANH & HIỆU ỨNG KHI BẤM NÚT
@@ -1456,20 +1470,22 @@
         }, true);
 
         // Cập nhật siteData
+        // getKey: "yes" = cần Key mới dùng được, "no" = dùng được luôn không cần Key
+        // ⚠️ Đây là giá trị mặc định, bạn tự chỉnh lại "yes"/"no" cho đúng thực tế từng mục
         const siteData = [
-            { name: "Delta Executor", tab: "executor", icon: "delta-logo.png", category: "Executor" },
-            { name: "Fluxus PC", tab: "executor", icon: "fluxus-logo.png", category: "Executor" },
-            { name: "Delta VNG", tab: "executor", icon: "delta-vng-logo.png", category: "Executor" },
-            { name: "Arceus X VNG", tab: "executor", icon: "arceus-logo.png", category: "Executor" },
-            { name: "Blox Fruits - Hoho Hub", tab: "script", icon: "", category: "Script" },
-            { name: "King Legacy - Alchemy Hub", tab: "script", icon: "", category: "Script" },
-            { name: "ZArchiver Pro", tab: "apk", icon: "", category: "MODS APK" },
-            { name: "Termux", tab: "apk", icon: "", category: "MODS APK" },
-            { name: "Termux:Boot", tab: "apk", icon: "", category: "MODS APK" },
-            { name: "UG Cloner Premium", tab: "apk", icon: "", category: "MODS APK" },
-            { name: "Bypass CITY", tab: "bypass", icon: "", category: "Bypass" },
-            { name: "Bypass VIP", tab: "bypass", icon: "delta-logo.png", category: "Bypass" },
-            { name: "Ghi chú", tab: "note", icon: "", category: "Ghi chú" }
+            { name: "Delta Executor", tab: "executor", icon: "delta-logo.png", category: "Executor", getKey: "yes" },
+            { name: "Fluxus PC", tab: "executor", icon: "fluxus-logo.png", category: "Executor", getKey: "yes" },
+            { name: "Delta VNG", tab: "executor", icon: "delta-vng-logo.png", category: "Executor", getKey: "yes" },
+            { name: "Arceus X VNG", tab: "executor", icon: "arceus-logo.png", category: "Executor", getKey: "yes" },
+            { name: "Blox Fruits - Hoho Hub", tab: "script", icon: "", category: "Script", getKey: "no" },
+            { name: "King Legacy - Alchemy Hub", tab: "script", icon: "", category: "Script", getKey: "no" },
+            { name: "ZArchiver Pro", tab: "apk", icon: "", category: "MODS APK", getKey: "no" },
+            { name: "Termux", tab: "apk", icon: "", category: "MODS APK", getKey: "no" },
+            { name: "Termux:Boot", tab: "apk", icon: "", category: "MODS APK", getKey: "no" },
+            { name: "UG Cloner Premium", tab: "apk", icon: "", category: "MODS APK", getKey: "no" },
+            { name: "Bypass CITY", tab: "bypass", icon: "", category: "Bypass", getKey: "no" },
+            { name: "Bypass VIP", tab: "bypass", icon: "delta-logo.png", category: "Bypass", getKey: "yes" },
+            { name: "Ghi chú", tab: "note", icon: "", category: "Ghi chú", getKey: "no" }
         ];
 
         function openWaitingPage(name, ver, icon, file) {
@@ -1570,7 +1586,46 @@
             }
         }
 
-        function selectTab(tabName) {
+        // ---- SUBPATH RIÊNG CHO TỪNG TAB (URL đẹp, dễ chia sẻ và lên Google) ----
+        const TAB_PATHS = {
+            home: '/',
+            executor: '/executor',
+            script: '/script',
+            apk: '/mods-apk',
+            bypass: '/bypass',
+            note: '/ghi-chu'
+        };
+        const PATH_TABS = Object.fromEntries(Object.entries(TAB_PATHS).map(([tab, path]) => [path, tab]));
+        const TAB_TITLES = {
+            home: 'Pain Tool - Trang Tải Hack Roblox và Script Farm Siêu Mượt',
+            executor: 'Executor Roblox (Delta, Fluxus, Arceus X) - Pain Tool',
+            script: 'Kho Script Roblox (Blox Fruits, King Legacy) - Pain Tool',
+            apk: 'MODS APK (ZArchiver, Termux) - Pain Tool',
+            bypass: 'Bypass Key/Linkvertise - Pain Tool',
+            note: 'Ghi chú - Pain Tool'
+        };
+        const BASE_TITLE = document.title;
+
+        function updateUrlForTab(tabName, replace) {
+            const path = TAB_PATHS[tabName] || '/';
+            if (location.pathname !== path) {
+                history[replace ? 'replaceState' : 'pushState']({ tab: tabName }, '', path);
+            }
+            document.title = TAB_TITLES[tabName] || BASE_TITLE;
+        }
+
+        function initRouteFromUrl() {
+            const tab = PATH_TABS[location.pathname] || 'home';
+            selectTab(tab, true);
+        }
+
+        window.addEventListener('popstate', (e) => {
+            const tab = (e.state && e.state.tab) || PATH_TABS[location.pathname] || 'home';
+            selectTab(tab, true);
+        });
+
+        function selectTab(tabName, skipPush) {
+            updateUrlForTab(tabName, !!skipPush);
             const sidebar = document.getElementById('sidebar');
             if (!sidebar.classList.contains('-translate-x-full')) {
                 toggleSidebar();
@@ -1687,13 +1742,20 @@
                         ? `<img src="${item.icon}" alt="${item.name}" class="w-7 h-7 rounded-lg object-cover border border-slate-200 shrink-0">`
                         : `<div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 font-bold text-xs flex items-center justify-center shrink-0">${item.category.charAt(0)}</div>`;
 
+                    const keyBadge = item.getKey === 'yes'
+                        ? `<span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 shrink-0">Cần Key</span>`
+                        : `<span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 shrink-0">Miễn phí</span>`;
+
                     return `
-                        <div onclick="navigateToItem('${item.tab}')" class="flex items-center justify-between p-3 hover:bg-purple-50 cursor-pointer border-b border-slate-100 last:border-none transition-colors">
+                        <div onclick="navigateToItem('${item.tab}')" class="flex items-center justify-between p-3 hover:bg-purple-50 cursor-pointer border-b border-slate-100 last:border-none transition-colors gap-2">
                             <div class="flex items-center space-x-3 overflow-hidden">
                                 ${iconHtml}
                                 <span class="font-medium text-sm text-slate-800 truncate">${item.name}</span>
                             </div>
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-500 shrink-0">${item.category}</span>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                ${keyBadge}
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-500">${item.category}</span>
+                            </div>
                         </div>
                     `;
                 }).join('');
@@ -1718,6 +1780,24 @@
             } else {
                 closeHeaderSearch(event);
             }
+        }
+
+        function clearHeaderSearch(event) {
+            if (event) event.stopPropagation();
+            const input = document.getElementById('headerSearchInput');
+            const dropdown = document.getElementById('searchResultsDropdown');
+            input.value = '';
+            dropdown.innerHTML = '';
+            dropdown.classList.add('hidden');
+            globalSearch();
+            input.focus();
+        }
+
+        function clearSidebarSearch() {
+            const input = document.getElementById('sidebarSearchInput');
+            input.value = '';
+            filterSidebarTabs();
+            input.focus();
         }
 
         function closeHeaderSearch(event) {
